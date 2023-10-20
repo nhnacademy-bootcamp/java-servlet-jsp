@@ -1,0 +1,13 @@
+= Html Form을 처리하는 Servlet
+
+== 아래의 Html Form을 처리하는 Servlet을 작성하시오
+
+* cf.) ServletRequest.getParameterValues()
+
+* form : multi.html 작성해주세요
+
+image:./images/image-1.png[image.png]
+
+* subbmit
+
+image:./images/image-2.png[image.png]

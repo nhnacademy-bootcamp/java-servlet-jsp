@@ -1,0 +1,19 @@
+= 로그아웃
+
+== GET /login
+
+* 세션이 없으면 login.html로 이동
+* 세션이 있으면 로그인 성공이라는 텍스트와 세션에 있는 로그인한 아이디 출력
+* *로그아웃 링크 추가*
+
+== GET /logout
+
+* 세션 종료 처리
+
+[source,java]
+----
+session.invalidate();
+----
+
+* JSESSIONID cookie 삭제 처리
+* /login 으로 이동

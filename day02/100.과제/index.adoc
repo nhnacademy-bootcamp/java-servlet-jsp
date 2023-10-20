@@ -1,0 +1,13 @@
+=== `Nhnmart Servlet/JSP version` 구현
+
+* Servlet 과 JSP를 최대한 분리하여 구현합니다.
+* Servlet 최소화
+* 단순 조회 화면은 최대한 JSP로 구현
+* JSP 내에서도 Scriptlet 최소 사용
+    ** 대신 JSP action tag와 EL을 최대한 사용
+* 모든 메세지는 영어, 한국어 2개 언어 지원
+    ** Resource Bundle 사용
+* `GET /change-lang?lang=` 으로 언어 변경
+    ** lang=ko : 한국어
+    ** lang=en : 영어
+* 예외 처리 적용

@@ -1,0 +1,70 @@
+= Source
+
+== multi.html
+
+[source,html]
+----
+<html>
+<head>
+    <title>multiple choices</title>
+    <meta charset="UTF-8" />
+</head>
+<body>
+    <form method="post" action="/multi">
+        <ul>
+            <li>
+                <input type="checkbox" name="class" id="class_java" value="java" /> <label for="class_java" >Java</label>
+            </li>
+            <li>
+                <input type="checkbox" name="class" id="class_html" value="html" /> <label for="class_html">HTML</label>
+            </li>
+            <li>
+                <input type="checkbox" name="class" id="class_maven" value="maven" /> <label for="class_maven">Maven</label>
+            </li>
+            <li>
+                <input type="checkbox" name="class" id="class_servlet" value="servlet" />  <label for="class_servlet">Servlet</label>
+            </li>
+        </ul>
+
+        <input type="submit" value="전송" />
+    </form>
+</body>
+</html>
+
+----
+
+== MultiServlet
+
+[source,java]
+----
+public class MultiServlet extends HttpServlet {
+    private static final Logger log = Logger.getLogger(MultiServlet.class.getName());
+
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String[] values = req.getParameterValues("class");
+        try(PrintWriter out = resp.getWriter()){
+            out.println(String.join(",", values));
+        }catch (IOException ex){
+            log.info(ex.getMessage());
+        }
+    }
+}
+
+----
+
+== web.xml
+
+[source,xml]
+----
+<servlet>
+    <servlet-name>multiServlet</servlet-name>
+    <servlet-class>com.nhnacademy.hello.MultiServlet</servlet-class>
+    <load-on-startup>1</load-on-startup>
+</servlet>
+
+<servlet-mapping>
+    <servlet-name>multiServlet</servlet-name>
+    <url-pattern>/multi</url-pattern>
+</servlet-mapping>
+----

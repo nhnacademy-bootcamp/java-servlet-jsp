@@ -1,0 +1,25 @@
+= 실습 - File Download
+
+== FileDownloadServlet
+
+* GET /download
+** fileName 파라미터 : 다운로드 받을 파일 이름
+*** 다운로드 받을 파일 이름만 받아서
+*** 파일을 업로드한 디렉토리에서 해당 파일을 찾아서
+*** 다운로드 처리
+
+== 다음을 이용하세요
+
+* Content-type: application/octet-stream
+* Content-Disposition header
+** cf.) https://datatracker.ietf.org/doc/html/rfc6266
+** 당장은 파일명은 ISO-8859-1 인코딩으로 처리 가능한 경우로만 한정
+[source,text]
+----
+Content-Disposition: attachment; filename=a.jpg
+----
+
+* try-with-resources
+* java.nio.file.Files.newInputStream(Path path, OpenOption… options)
+* java.nio.file.Paths.get(String first, String… more)
+* javax.servlet.getOutputStream()

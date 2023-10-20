@@ -1,0 +1,74 @@
+= JavaBeans 란?
+
+* 자바로 작성된 소프트웨어 컴포넌트
+* 빌더 형식의 개발도구에서 가시적으로 조작이 가능하고 또한 재사용이 가능한 소프트웨어 컴포넌트
+* ≠ EJB(Enterprise JavaBeans)
+* ≠ Spring Bean
+
+== JavaBeans 제약조건
+
+* public default (no-arg) constructor
+* getter/setter
+* implements java.io.Serializable
+
+== 참고
+
+* link:Java_Beans.adoc[Java Beans]
+
+
+
+== JSP action tag (JavaBeans 사용)
+
+== &lt;jsp:useBean&gt;
+
+* 기존에 있던 객체(bean)을 찾거나 없으면 새로운 객체(bean)을 생성해서 반환
+    ** 지정된 scope에 설정한 id와 같은 이름의 속성(attribute)이 있으면 해당 bean을 반환하고
+    ** 없으면 새로운 bean을 생성해서 지정된 scope에 id와 같은 이름의 속성(attribute)으로 설정함
+
+[source,java]
+----
+<jsp:useBean id="numberList" scope="request"
+             type="java.util.List<java.lang.Integer>"
+             class="java.util.ArrayList" />
+
+----
+
+=
+
+[source,java]
+----
+List<Integer> numberList = request.getAttribute("numberList");
+if (Objects.isNull(numberList)) {
+    numberList = new ArrayList<>();
+    request.setAttribute("numberList", numberList);
+}
+
+----
+
+== &lt;jsp:setProperty&gt;
+
+* Java bean의 프로퍼티 값을 설정
+[source,java]
+----
+@NoArgsConstructor
+@Getter
+@Setter
+public class User implements Serializable {
+    private String name;
+    private int age;
+}
+
+----
+
+[source,java]
+----
+<jsp:useBean id="user1" scope="request" class="com.nhnacademy.domain.User" />
+<jsp:setProperty name="user1" property="age" value="35" />
+----
+
+== &lt;jsp:getProperty&gt;
+
+* Java bean의 프로퍼티 값을 반환
+
+== 실습
+* link:UserBean.adoc[UserBean-실습]

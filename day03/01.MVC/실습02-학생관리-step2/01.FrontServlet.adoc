@@ -1,0 +1,70 @@
+= FrontServlet
+
+== 모든 요청은 frontServlet 받아서 처리
+
+* *.do 요청을 -> `frontServlet` 에서 처리
+* 공통 처리
+** CharacterEncoding
+** ContentType
+
+== url 경로를 기준으로 실행해야할 servlet 결정
+
+* resolveServlet method 구현하기
+
+== 서블릿은 비지니스 로직을 처리하고 view 속성에 view역할을 할 jsp 경로를 반환
+
+* ex) req.setAttribute("view", "/student/list.jsp");
+* redirect 처리 : redirect:jsp path
+** req.setAttribute("view", "redirect:/student/list.jsp");
+* include를 이용해서 servlet 처리와 view를 처리합니다.
+** forward를 처리하면 해당 servlet으로 이동 -&gt; jsp가 view 역할을 할 수 없습니다.(참고해주세요)
+[source,java]
+----
+@Slf4j
+@WebServlet(name = "frontServlet", urlPatterns = "*.do")
+public class FrontServlet extends HttpServlet {
+    private static final String REDIRECT_PREFIX="redirect";
+
+    @Override
+    protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+
+        //todo 공통 처리 - 응답 content-type, character encoding 지정.
+        
+        try{
+            //실제 요청 처리할 servlet을 결정
+            String servletPath = resolveServlet(req.getServletPath());
+            RequestDispatcher rd = req.getRequestDispatcher(servletPath);
+            rd.include(req, resp);
+
+            //실제 요청을 처리한 servlet이 'view'라는 request 속성값으로 view를 전달해 줌.
+            String view = (String) req.getAttribute("view");
+            if (view.startsWith(REDIRECT_PREFIX)) {
+                log.error("redirect-url : {}", view.substring(REDIRECT_PREFIX.length()+1));
+                // todo  `redirect:`로 시작하면 redirect 처리.
+
+            } else {
+                //todo redirect 아니면 JSP에게 view 처리를 위임하여 그 결과를 include시킴.
+
+            }
+        }catch(Exception ex){
+             //todo 공통 error 처리 - ErrorServlet 참고해서 처리
+             
+            
+            //todo  forward - /error.jsp
+            
+        }
+    }
+
+    private String resolveServlet(String servletPath){
+        String processingServlet = null;
+        if("/student/list.do".equals(servletPath)){
+            processingServlet = "/student/list";
+        }
+
+        //todo 실행할 servlet 결정하기
+
+        return processingServlet;
+    }
+
+}
+----

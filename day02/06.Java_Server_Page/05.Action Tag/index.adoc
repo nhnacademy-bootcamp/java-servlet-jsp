@@ -1,0 +1,28 @@
+= Jsp Action Tag
+
+* JSP 페이지 내에서 어떤 동작을 하도록 지시하는 태그
+* XML 태그 형식
+* JSP  Action Tags는  페이지 간 플로우를 제어합니다.
+* JSP  Action Tags는  Java Bean을 사용하는 데 사용합니다.
+
+== 앞선 forward vs include 실습에서
+
+* pageContext.include(''), pageContext.forward('')를
+* &lt;jsp:include page='' /&gt;, &lt;jsp:forward page='' /&gt; 로 바꿔보자
+* &lt;jsp:param /&gt;  이용해서 parameter 전달하기
+** 전달된 parameter는 request.getParameter("id") 접근할 수 있음
+
+[source,java]
+----
+<jsp:include page="sub.jsp">
+    <jsp:param name="id" value="<%=id%>"/>
+</jsp:include>
+
+----
+
+[source,java]
+----
+<jsp:forward page="sub.jsp">
+    <jsp:param name="id" value="<%=id%>"/>
+</jsp:forward>
+----

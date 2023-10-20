@@ -1,0 +1,142 @@
+= JSP EL(Expression Language)
+
+* Java bean의 프로퍼티나 array, list, map 같은 자료구조의 값을 쉽게 꺼낼 수 있게 해주는 표현식
+* javascript (ECMA Script 2.0)에서 영감받아 만든 표현식
+* Scriptlet 사용 최소화.
+
+== EL 표기법
+
+* immediate evaluation : JSP가 실행될 때 표현식으로 지정한 값이 JSP 페이지에 즉시 반영
+** ${표현식}
+* deferred evaluation : 표현식으로 지정된 값은 시스템에서 필요하다고 판단할 때 그 값을 사용
+** 
+
+== {표현식}
+
+[source,html]
+----
+my name is <jsp:getProperty name="user1" property="name"/>.<br />
+----
+
+=
+
+[source,html]
+----
+my name is ${user1.name}.<br />
+
+----
+
+== EL 검색 범위
+
+=== 범위 지정 시 scope 참고 객체
+
+* pageScope → JspContext 객체를 참조
+* requestScope → ServletRequest 객체를 참조
+* sessionScope → HttpSession 객체를 참조
+* applicationScope→ ServletContext 객체를 참조
+
+=== Ex.)
+
+[source,java]
+----
+${requestScope.user1.name}
+----
+
+[source,java]
+----
+${sessionScope.user2.age}
+----
+
+=== EL 기본 문법 - 리터럴
+
+* 문자열 : ${"나랏말"}, ${'문자'}
+* 정수 : ${20}
+* 실수 : ${3.14}
+* boolean : ${true}
+* null : ${null}
+[source,html]
+----
+<div>
+    ${"나랏말"}이 중국과 달라 ${'문자'}와 서로 통하지 아니하므로<br />
+    ${20}명의 ${3.14}인 백성이 이르고자 하는 바가 있어도<br />
+    마침내 제${null}뜻을 능히 펴지 못하는 사람이 많다 ${true}.<br />
+</div>
+----
+
+=== EL 기본 문법 - 배열, 리스트, 맵
+
+[source,java]
+----
+<%@ page import="java.util.List" %>
+<%@ page import="java.util.ArrayList" %>
+<%@ page import="java.util.Map" %>
+<%@ page import="java.util.HashMap" %>
+<%@ page contentType="text/html;charset=UTF-8" language="java" trimDirectiveWhitespaces="true"  %>
+<%
+    pageContext.setAttribute("array", new String[] { "this", "is", "how", "we", "do", "it" });
+
+    List<Integer> list = new ArrayList<>();
+    list.add(1);
+    list.add(3);
+    list.add(5);
+
+    pageContext.setAttribute("list", list);
+
+    Map<String, String> map1 = new HashMap<>();
+    map1.put("Mariah Carey", "Without you");
+    map1.put("Whitney Houston", "I will always love you");
+    map1.put("Celine Dion", "My heart will go on");
+
+    pageContext.setAttribute("map1", map1);
+
+    Map<String, Integer> map2 = new HashMap<>();
+    map2.put("j", 1);
+    map2.put("s", 2);
+    map2.put("p", 7);
+
+    pageContext.setAttribute("map2", map2);
+%>
+<html>
+    <head>
+        <title>el - array, list, map test</title>
+    </head>
+    <body>
+        <p>array=${array[2]}</p>
+        <p>list=${list[1]}</p>
+        <p>map1=${map1['Whitney Houston']}</p>
+        <p>map2=${map2.p}</p>
+    </body>
+</html>
+----
+
+=== EL 기본문법 - 연산자
+
+[source,xml]
+----
+<%@ page contentType="text/html;charset=UTF-8" language="java" trimDirectiveWhitespaces="true" %>
+<html>
+<head>
+    <title>el 기본문법 - 연산자</title>
+</head>
+<body>
+    <p>${ 66 + 22 }=88</p>
+    <p>${ 44 - 22 }=22</p>
+    <p>${ 11 *  2 }=22</p>
+    <p>${ 22 /  2 }=11</p>
+    <p>${ 22 %  3 }=1</p>
+    <p>${ 22 mod 3 }=1</p>
+    <p>${ true && false }=false</p>
+    <p>${ false and true }=false</p>
+    <p>${ true || false }=true</p>
+    <p>${ false or true }=true</p>
+    <p>${not false}=true</p>
+    <p>${!true}=false</p>
+    <p>${ 123 == 123 }=true</p>
+    <p>${ 123 eq 123 }=true</p>
+    <p>${ 101 < 100 }=false</p>
+    <p>${ 101 gt 100 }=true</p>
+    <p>${ 101 != 100 }=true</p>
+    <p>${ 20 > 10 ? "gt" : "lt" }=gt</p>
+</body>
+</html>
+----

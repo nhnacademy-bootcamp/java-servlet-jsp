@@ -1,0 +1,52 @@
+= 구구단
+
+== JSP로 구구단을 작성해보자 (2단 ~ 9단)
+
+* 각 단별 구분을 위해 주석을 사용해 봅시다
+
+=== 다음의 차이점은?
+
+[source,java]
+----
+<!-- <%= i %>단 시작 -->
+
+----
+
+vs
+
+[source,java]
+----
+<%-- <%= i %>단 시작 --%>
+----
+
+== gugudan.jsp
+
+[source,html]
+----
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<html>
+<head>
+    <meta charset="UTF-8"/>
+    <title>구구단</title>
+</head>
+<body>
+<%
+    for(int i=2; i<=9; i++){
+%>
+<!-- <%= i %>단 시작 - html comment -->
+<%-- <%= i %>단 시작 - Scriptlet comment --%>
+    <h1><%=i%>단</h1>
+<%
+        for(int j=1; j<=9; j++){
+%>
+    <p>
+        <%=i%>*<%=j%>=<%=i*j%>
+    </p>
+<%
+        }
+    }
+%>
+</body>
+</html>
+
+----

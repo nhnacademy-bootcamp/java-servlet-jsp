@@ -1,0 +1,194 @@
+= custom Tag function
+
+* list 출력 실습에서
+** Notice 객체
+[source,java]
+----
+private Date createdAt;
+을
+private LocalDateTime createdAt;
+변경
+----
+
+* 테그는 LocalDateTime 지원하지 않음
+
+== LocalDateTime을 지원하는 custom tag 만들기
+
+=== Notice.java
+
+----
+* Date -> LocalDateTime 변경
+----
+
+[source,java]
+----
+public class Notice implements Serializable {
+    public Notice(){
+
+    }
+
+    public Notice(String subject, String name, long counter) {
+        this.subject = subject;
+        this.name = name;
+        this.counter = counter;
+        this.createdAt = LocalDateTime.now();
+    }
+
+    private String subject;
+    private String name;
+    private Long counter;
+    private LocalDateTime createdAt;
+
+    public String getSubject() {
+        return subject;
+    }
+
+    public void setSubject(String subject) {
+        this.subject = subject;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public Long getCounter() {
+        return counter;
+    }
+
+    public void setCounter(Long counter) {
+        this.counter = counter;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+}
+----
+
+=== LocalDateTimeFunction
+
+----
+* parameter
+  \*LocalDateTime localDateTime, String pattern
+* 입력받아 pattern 형태로 리턴
+----
+
+[source,java]
+----
+public class LocalDateTimeFunction {
+    public LocalDateTimeFunction() {
+        throw new IllegalStateException("Utility class");
+    }
+
+    public static String formatDate(LocalDateTime localDateTime, String pattern){
+        return localDateTime.format(DateTimeFormatter.ofPattern(pattern));
+    }
+    
+}
+----
+
+=== /WEB-INF/tld/customTagLibrary.tld
+
+* url : custom tag library를 식별하기 위해서 uri를 지정( 인터넷 도메인을 사용)
+[source,xml]
+----
+<taglib xmlns="http://java.sun.com/xml/ns/j2ee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-jsptaglibrary_2_0.xsd"
+        version="2.0">
+
+    <description>CommonUtil functions library</description>
+    <display-name>CommonUtil functions</display-name>
+    <tlib-version>1.0</tlib-version>
+    <short-name>cfmt</short-name>
+    <uri>http://nhnacademy.com/cfmt</uri>
+
+    <function>
+        <description>LocalDatetime parse</description>
+        <name>formatDate</name>
+        <function-class>com.nhnacademy.jsp.jstl.LocalDateTimeFunction</function-class>
+        <function-signature>java.lang.String formatDate(java.time.LocalDateTime,java.lang.String)</function-signature>
+        <example>
+            ${cfmt:formatDate(str)}
+        </example>
+    </function>
+</taglib>
+----
+
+=== web,xml
+
+* default tld path : /WEB/INF/tld/*
+* 기본경로를 사용하지 않을경우 직접 web.xml지정
+* https://docs.oracle.com/cd/E11035_01/wls100/webapp/configurejsp.html#wp157825
+
+[source,xml]
+----
+<jsp-config>
+    <taglib>
+        <taglib-uri>http://nhnacademy.com/cfmt</taglib-uri>
+        <taglib-location>/WEB-INF/tld/customTagLibrary.tld</taglib-location>
+    </taglib>
+</jsp-config>
+----
+
+=== notice.jsp
+
+----
+${cfmt:formatDate(item.createdAt, 'yyyy-MM-dd HH:mm:ss')} 
+----
+
+[source,xml]
+----
+<%@ page contentType="text/html;charset=UTF-8" language="java" trimDirectiveWhitespaces="true" %>
+<%@ taglib prefix="c"  uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="cfmt" uri="http://nhnacademy.com/cfmt" %>
+
+<html>
+<head>
+    <title>공지사항</title>
+    <style>
+        table {
+            width: 800px;
+            border-collapse: collapse;
+            border:1px #ccc solid;
+        }
+        table tr>td,th{
+            padding:5px;
+            border:1px #ccc solid;
+        }
+    </style>
+</head>
+<body>
+    <h1>공지사항</h1>
+    <table>
+        <thead>
+            <tr>
+                <th style="width: 30%" >제목</th>
+                <th style="width: 20%" >작성자</th>
+                <th style="width: 25%">조회수</th>
+                <th style="width: 25%">작성일</th>
+            </tr>
+        </thead>
+        <tbody>
+        <c:forEach var="item" items="${noticeList}">
+            <tr>
+                <td>${item.subject}</td>
+                <td style="text-align: center">${item.name}</td>
+                <td style="text-align: center">${item.counter}</td>
+                <td style="text-align: center">
+                    ${cfmt:formatDate(item.createdAt, 'yyyy-MM-dd HH:mm:ss')}
+                </td>
+            </tr>
+        </c:forEach>
+        </tbody>
+    </table>
+</body>
+</html>
+----

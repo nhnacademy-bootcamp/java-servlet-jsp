@@ -1,0 +1,185 @@
+= JSP 링크 변경
+
+* servlet 링크를 .do로 변경
+** ex ) /student/list -&gt; /student/list.do
+
+== list.jsp
+
+[source,html]
+----
+<html>
+<head>
+    <title>student - list</title>
+    <link rel="stylesheet" href="/style.css" />
+</head>
+
+<body>
+    <h1>학생 리스트</h1>
+    <!-- todo register.do 변경 -->
+    <p><a href="/student/register" >학생(등록)</a></p>
+    <table>
+        <thead>
+            <tr>
+                <th>아이디</th>
+                <th>이름</th>
+                <th>성별</th>
+                <th>나이</th>
+                <th>cmd</th>
+            </tr>
+        </thead>
+        <tbody>
+        <c:forEach var="item" items="${studentList}">
+            <tr>
+                <td>${item.id}</td>
+                <td>${item.name}</td>
+                <td>${item.gender}</td>
+                <td>${item.age}</td>
+                <td>
+                <!-- todo view.do 변경 -->
+                    <c:url var="view_link" value="/student/view" scope="request">
+                        <c:param name="id" value="${item.id}" />
+                    </c:url>
+                    <a href="${view_link}">조회</a>
+                </td>
+            </tr>
+        </c:forEach>
+        </tbody>
+    </table>
+</body>
+</html>
+
+----
+
+== register.jsp
+
+[source,html]
+----
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
+<html>
+    <head>
+        <title>학생-등록</title>
+        <link rel="stylesheet" href="/style.css" />
+        <meta charset="UTF-8" />
+    </head>
+
+    <body>
+    <!-- todo /register -> /register.do 변경  -->
+    <!-- todo /update -> /update.do 변경  -->
+        <c:choose>
+            <c:when test="${empty student}">
+                <c:set var="action" value="/student/register" />
+            </c:when>
+            <c:otherwise>
+                <c:set var="action" value="/student/update" />
+            </c:otherwise>
+        </c:choose>
+
+        <form method="post" action="${action}">
+            <table>
+                <tbody>
+                    <tr>
+                        <th>ID</th>
+                        <td><input type="text" name="id" value="${student.id}" required /></td>
+                    </tr>
+                    <tr>
+                        <th>이름</th>
+                        <td><input type="text" name="name" value="${student.name}" required /></td>
+                    </tr>
+                    <tr>
+                        <th>성별</th>
+                        <td>
+                            <input type="radio" name="gender" value="M" ${student.gender eq 'M' ? 'checked' : '' } />남
+                            <input type="radio" name="gender" value="M" ${student.gender eq 'F' ? 'checked' : '' } />여
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>나이</th>
+                        <td><input type="number" name="age" value="${student.age}" required /></td>
+                    </tr>
+                </tbody>
+            </table>
+            <p>
+                <button type="submit">
+                    <c:choose>
+                        <c:when test="${empty student}">
+                            등록
+                        </c:when>
+                        <c:otherwise>
+                           수정
+                        </c:otherwise>
+                    </c:choose>
+                </button>
+            </p>
+        </form>
+    </body>
+</html>
+
+----
+
+== view.jsp
+
+[source,html]
+----
+<%@ page contentType="text/html;charset=UTF-8" language="java" trimDirectiveWhitespaces="true" %>
+<%@ taglib prefix="c"  uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="cfmt" uri="http://nhnacademy.com/cfmt" %>
+<html>
+<head>
+    <title>학생-조회</title>
+    <link rel="stylesheet" href="/style.css" />
+</head>
+<body>
+    <table>
+        <tbody>
+
+            <tr>
+                <th>아이디</th>
+                <td>${student.id}</td>
+            </tr>
+
+            <tr>
+                <th>이름</th>
+                <td>${student.name}</td>
+            </tr>
+
+            <tr>
+                <th>성별</th>
+                <td>${student.gender}</td>
+            </tr>
+
+            <tr>
+                <th>나이</th>
+                <td>${student.age}</td>
+            </tr>
+            <tr>
+                <th>등록일</th>
+                <td>${cfmt:formatDate(student.createdAt, 'yyyy-MM-dd HH:mm:ss')}</td>
+            </tr>
+
+        </tbody>
+    </table>
+    <ul>
+        <!-- todo /list -> /list 변경 -->
+        <li><a href="/student/list.do">리스트</a></li>
+        <li>
+            <!-- todo /update -> /update.do  -->
+            <c:url var="update_link" value="/student/update" >
+                <c:param name="id" value="${student.id}" />
+            </c:url>
+            <a href="${update_link}">수정</a>
+        </li>
+        <li>
+            <!-- todo /delete -> /delete.do 변경 -->
+            <form method="post" action="/student/delete.do">
+                <input type="hidden" name="id" value="${student.id}" />
+                <button type="submit">삭제</button>
+            </form>
+        </li>
+
+    </ul>
+
+</body>
+</html>
+----

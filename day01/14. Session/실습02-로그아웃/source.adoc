@@ -1,0 +1,43 @@
+= 로그아웃 실습(source)
+
+== LogoutServlet.java
+
+[source,java]
+----
+public class LogoutServlet extends HttpServlet {
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        //session 있으면 가져오고 없으면 null
+        HttpSession session = req.getSession(false);
+
+        if(Objects.nonNull(session)) {
+            session.invalidate();
+        }
+
+        Cookie cookie =  CookieUtils.getCookie(req,"JSESSIONID");
+        if(Objects.nonNull(cookie)){
+            cookie.setValue("");
+            cookie.setMaxAge(0);
+            resp.addCookie(cookie);
+        }
+
+        resp.sendRedirect("/login.html");
+    }
+}
+
+----
+
+=== web.xml
+
+[source,xml]
+----
+<servlet>
+    <servlet-name>logoutServlet</servlet-name>
+    <servlet-class>com.nhnacademy.hello.login.LogoutServlet</servlet-class>
+</servlet>
+
+<servlet-mapping>
+    <servlet-name>logoutServlet</servlet-name>
+    <url-pattern>/logout</url-pattern>
+</servlet-mapping>
+----

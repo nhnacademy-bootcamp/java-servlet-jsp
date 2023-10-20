@@ -1,0 +1,28 @@
+= 과제
+
+== NHN Mart Servlet 버전 마무리
+
+* Front Controller Pattern 적용
+* JSP는 Scriptlet 사용을 최소화
+
+== 결제기능 추가
+
+* 로그인하면 사용자에게 돈 80_000원 부여
+
+== 초기화면
+
+* 상품 목록 링크
+* 장바구니 링크
+* 현재 언어(ko or en) 표시 new
+* 잔고 (사용자에게 부여된 돈에서 사용하고 남은 금액) 표시
+* 장바구니
+* 장바구니 담기
+** 상품 수량 부족 시 AmountException
+* 장바구니에 담긴 물건 선택해서 결재: POST /pay
+** 결재한 금액 표시
+** 결재 후 잔액 표시
+** 잔액 부족 시 NotEnoughMoneyException
+
+== 다국어 지원
+
+* 모든 메세지는 영어, 한국어 2개 언어 지원

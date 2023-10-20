@@ -1,0 +1,111 @@
+= 로그인 실습 (source)
+
+== LoginServlet.java
+[source,java]
+----
+@Slf4j
+public class LoginServlet extends HttpServlet {
+    private String initParamId;
+    private String initParamPwd;
+
+    @Override
+    public void init(ServletConfig config) throws ServletException {
+
+        initParamId = config.getInitParameter("id");
+        initParamPwd = config.getInitParameter("pwd");
+    }
+
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        // session이 있으면 가져오고 없으면 null
+        HttpSession session = req.getSession(false);
+        if(Objects.isNull(session) || Objects.isNull(session.getAttribute("id")) ){
+            resp.sendRedirect("/login.html");
+        }else{
+            resp.setContentType("text/html");
+            resp.setCharacterEncoding("utf-8");
+
+            try(PrintWriter out = resp.getWriter()){
+                out.println("<!DOCTYPE html>");
+                out.println("<html>");
+                    out.println("<head>");
+                        out.println("<meta charset='utf-8'>");
+                    out.println("</head>");
+                    out.println("<body>");
+                        out.println("login success : id =" + session.getAttribute("id") + "<br/>");
+                        out.println("<a href='/logout'>logout</a>");
+                    out.println("</body>");
+                out.println("</html>");
+            }
+
+        }
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+
+        String id = req.getParameter("id");
+        String pwd = req.getParameter("pwd");
+
+        if(initParamId.equals(id) && initParamPwd.equals(pwd)){
+            //session 있으면 가져오고 없으면 생성
+            HttpSession session = req.getSession();
+            session.setAttribute("id",id);
+            resp.sendRedirect("/login");
+        }else{
+            log.error("아이디/패스워드가 일치하지 않습니다.");
+            resp.sendRedirect("/login.html");
+        }
+
+    }
+
+}
+
+----
+
+== login.html
+
+[source,html]
+----
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>login</title>
+</head>
+<body>
+    <form method="post" action="/login">
+        <input type="text" name="id" placeholder="아이디 : admin" /><br />
+        <input type="password" name="pwd" placeholder="패스워드 : 1234" /><br />
+        <input type="submit" value="전송" />
+    </form>
+</body>
+</html>
+----
+
+== web.xml
+
+* servlet-class 경로는 페키지 구조에 맞게 지정합니다.
+
+[source,xml]
+----
+<servlet>
+    <servlet-name>loginServlet</servlet-name>
+    <servlet-class>com.nhnacademy.hello.login.LoginServlet</servlet-class>
+
+    <init-param>
+        <param-name>id</param-name>
+        <param-value>admin</param-value>
+    </init-param>
+    <init-param>
+        <param-name>pwd</param-name>
+        <param-value>1234</param-value>
+    </init-param>
+
+</servlet>
+
+<servlet-mapping>
+    <servlet-name>loginServlet</servlet-name>
+    <url-pattern>/login</url-pattern>
+</servlet-mapping>
+----

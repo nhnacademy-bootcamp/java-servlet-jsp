@@ -1,0 +1,179 @@
+= Domain &amp; Cookie
+
+== Domain 설정
+
+* mac OS
+** /etc/hosts
+
+* Windows (Administrator 권한으로 열기)
+** C:\Windows\system32\drivers\etc\hosts
+
+* ubuntu
+** /etc/hosts
+
+----
+127.0.0.1 1.a.com
+127.0.0.1 2.a.com
+127.0.0.1 a.com
+127.0.0.1 b.com
+----
+
+== Cookie Spec 변화
+
+=== Spec Hsitory (https://meetup.nhncloud.com/posts/209)
+
+* Netscape : 개념 제시
+** Netscape 개발자들이 제시한 표준 쿠키 문서는 애매모호하게 작성되었고, 개발자 각각의 주관이 포함된 쿠키 구현으로인해 큰 호환성 문제가 발생하게 됨.
+* RFC2109 : 제한사항 강화
+** 강력한 스팩 제안을 두어 중구난방이었던 HTTP 쿠키를 하나의 방식으로 정리하고자 하였으나… 개발자들이 현실과 너무 동떨어져 있다고 여겨 거의 구현하지 않음
+* RFC2965 : 대체 스팩 제시
+** 호환성을 위해서 이전까지의 set-cookie 1 스팩 유지하면서 set-cookie2  스팩을 제시했으나.. 무시됨.
+* RFC6256 : 구 RFC 폐기, 관행의 표준스팩화
+** 새로운 스펙을 강제하기 보다는 이미 상용화된  웹 브라우져 , 웹서버들을 문서화 함.
+
+=== 간단요약
+
+|===
+|쿠키 |버전 속성 |Set-cookie 헤더 |만료 메커니즘 |도메인 속성 |쿠키 name,value 제한사항 |쿠키값 
+
+|레거시 |Version=0, 1 |Set-cookie, Set-cookie2 |max-age, expires 혼용 |`.`으로 시작 |name,value 모두 HTTP/1.1 token형식 |name=이후의 token형식 value 또는 `"` 로 감싸진 값
+|RFC6265 |사용하지 않음 |Set-cookie |max-age가 있을 경우 expires 무시 |`.`으로 시작하지 않음 |name만 HTTP/1.1 token 형식 |첫 `=`와 첫 `;`사이의 문자
+|===
+
+=== Tomcat 8.5 기준
+
+* 이상: RFC6265 spec
+* 미만 : 레거시 spec
+
+|===
+|상황 |LegacyCookieProcessor |8.0.x Rfc6265CookieProcessor |8.5.x Rfc6265CookieProcessor 
+
+|도메인을 `.`으로 시작 |그대로 처리 |`.`이 제거됨 |Exception 발생
+|도메인을 `.`으로 시작하지 않음 |`.`이 추가됨 |그대로 처리 |그대로 처리
+|===
+
+=== Tomcat LegacyCookieProcessor
+
+* 설치된 tomcat 경로에서
+** conf/context.xml
+
+[source,xml]
+----
+<Context>
+    <CookieProcessor className="org.apache.tomcat.util.http.LegacyCookieProcessor" />
+</Context>
+----
+
+____
+org.apache.tomcat.util.http.LegacyCookieProcessor는 Apache Tomcat 웹 서버에서 사용되는 쿠키 처리기입니다. 이 클래스는 예전 버전의 쿠키 규격을 따르는 쿠키를 처리하기 위해 사용됩니다.
+
+이 클래스는 Tomcat 8.5 이전 버전에서 사용되는 쿠키 처리기입니다. Tomcat 8.5 이후 버전에서는 새로운 쿠키 처리기인 org.apache.tomcat.util.http.Rfc6265CookieProcessor가 사용됩니다.
+
+LegacyCookieProcessor는 예전 버전의 쿠키 규격을 따르는 쿠키의 이름, 값, 경로 등의 속성을 처리하는 데 사용됩니다.
+예전 버전의 쿠키 규격에서는 쿠키 값에 공백이 포함될 수 있었지만, 새로운 규격에서는 공백이 허용되지 않습니다.
+따라서 LegacyCookieProcessor는 이전 버전의 쿠키 규격을 따르는 애플리케이션을 지원하기 위해 유지되고 있습니다.
+____
+
+== DomainCookieServlet
+
+[source,java]
+----
+@Slf4j
+public class DomainCookieServlet extends HttpServlet {
+
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String requestUri = req.getRequestURI();
+        log.error("requestUri:{}",requestUri);
+        if (requestUri.endsWith("/read")) {
+            readCookie(req, resp);
+        } else if(requestUri.endsWith("/write")) {
+            writeCookie(req, resp);
+        } else {
+            show(req, resp);
+        }
+    }
+
+    private void show(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        resp.setContentType("text/html");
+        resp.setCharacterEncoding("utf-8");
+
+        try(PrintWriter out = resp.getWriter()) {
+            out.println("<html>");
+            out.println("<head><title>cookie test</title></head>");
+            out.println("<body>");
+                out.println("<ul>");
+                    out.println("<li><a href='http://a.com:8080/domain-cookie/write?domain=a.com'>set cookie: domain=a.com, path=/</a></li>");
+                    out.println("<li><a href='http://a.com:8080/domain-cookie/write?domain=.a.com'>set cookie: domain=.a.com, path=/</a></li>");
+                    out.println("<li><a href='http://1.a.com:8080/domain-cookie/write?domain=.1.a.com'>set cookie: domain=.1.a.com, path=/</a></li>");
+                    out.println("<li><a href='http://1.a.com:8080/domain-cookie/more/write?domain=.a.com'>set cookie: domain=.a.com, path=/domain-cookie/more</a></li>");
+
+                    out.println("<li><a href='http://a.com:8080/domain-cookie/read'>get cookie: domain=a.com</a><br /></li>");
+                    out.println("<li><a href='http://b.com:8080/domain-cookie/read'>get cookie: domain=b.com</a><br /></li>");
+                    out.println("<li><a href='http://1.a.com:8080/domain-cookie/read'>get cookie: domain=1.a.com</a><br /></li>");
+                    out.println("<li><a href='http://2.a.com:8080/domain-cookie/read'>get cookie: domain=2.a.com</a><br /></li>");
+                    out.println("<li><a href='http://1.a.com:8080/domain-cookie/more/read'>get cookie: domain=1.a.com, path=/domain-cookie/more/read</a><br /></li>");
+                out.println("</ul>");
+            out.println("</body>");
+            out.println("</html>");
+        }
+    }
+
+    private static final String COOKIE_NAME = "cook2";
+
+    private void readCookie(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        if(Objects.isNull(req.getCookies())){
+            return;
+        }
+        try(PrintWriter out = resp.getWriter()){
+            for(int i=0; i<req.getCookies().length; i++){
+                Cookie cookie = req.getCookies()[i];
+                out.println(cookie.getName() + ":" + cookie.getValue());
+            }
+        }catch (Exception e){
+            log.error("read-cookie error : {}",e.getMessage(),e);
+        }
+    }
+
+    private static final String MORE_PATH = "/domain-cookie/more/write";
+
+    private void writeCookie(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String domain = req.getParameter("domain");
+        String path = MORE_PATH.equals(req.getRequestURI())
+                ? MORE_PATH.replace("/write", "") : "/";
+
+        Cookie newCookie = new Cookie(COOKIE_NAME, req.getRequestURL().append("?").append(req.getQueryString()).toString());
+        newCookie.setDomain(domain);
+        newCookie.setPath(path);
+
+        resp.addCookie(newCookie);
+
+        log.error("cookieName : {}", newCookie.getName());
+        log.error("cookieValue : {}", newCookie.getValue());
+        log.error("cookieDomain : {}", newCookie.getDomain());
+
+        show(req, resp);
+    }
+
+}
+
+----
+
+== web.xml
+
+[source,xml]
+----
+<servlet>
+    <servlet-name>domainCookieServlet</servlet-name>
+    <servlet-class>com.nhnacademy.hello.DomainCookieServlet</servlet-class>
+</servlet>
+
+<servlet-mapping>
+    <servlet-name>domainCookieServlet</servlet-name>
+    <url-pattern>/domain-cookie/*</url-pattern>
+</servlet-mapping>
+----
+
+== 테스트
+
+* http://a.com:8080/domain-cookie/

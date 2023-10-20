@@ -1,0 +1,33 @@
+= Filter를 이용한 로그인 여부 처리
+
+== LoginCheckFilter 작성
+
+* 세션이 없으면 /login.html 으로 이동 ( Redirect )
+
+[source,java]
+----
+((HttpServletResponse) servletResponse).sendRedirect("/login.html");
+----
+
+* 세션이 있으면
+
+[source,java]
+----
+filterChain.doFilter(request, response)
+----
+
+== LoginCheckFilter가 적용되지 않을 URL 적용
+
+* `<filter>` 의 `<init-param>` 이용
+
+[source,xml]
+----
+<init-param>
+    <param-name>exclude-urls</param-name>
+    <param-value>
+        /login
+        /logout
+        /login.html
+    </param-value>
+</init-param>
+----

@@ -1,0 +1,92 @@
+= File Download (Source)
+
+== FileDownloadServlet
+
+[source,java]
+----
+@Slf4j
+public class FileDownloadServlet extends HttpServlet {
+    private static final String UPLOAD_DIR = "/Users/nhn/IdeaProjects/servlet:jsp/2일차/src/main/upload";
+
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String fileName = req.getParameter("fileName");
+        if(Objects.isNull(fileName) || fileName.isEmpty() ){
+            resp.sendError(400,"fileName parameter is needed");
+            return ;
+        }
+
+        String filePath = UPLOAD_DIR + File.separator + fileName;
+        Path path = Path.of(filePath);
+
+        if(!Files.exists(path)){
+            log.error("File not found:" + fileName);
+            resp.sendError(404,"File not found:" + fileName);
+            return;
+        }
+
+        resp.setContentType("application/octet-stream");
+        resp.setHeader("Content-Disposition", "attachment; filename=" + fileName);
+
+        try (InputStream is = Files.newInputStream(path);
+             OutputStream os = resp.getOutputStream()
+        ){
+
+            byte[] buffer = new byte[4096];
+
+            int n;
+            while (-1 != (n = is.read(buffer))) {
+                os.write(buffer, 0, n);
+            }
+        } catch (IOException ex) {
+            log.error("", ex);
+        }
+
+    }
+}
+
+----
+
+== web.xml
+
+[source,xml]
+----
+ <servlet>
+    <servlet-name>fileDownloadServlet</servlet-name>
+    <servlet-class>com.nhnacademy.hello.file.FileDownloadServlet</servlet-class>
+</servlet>
+<servlet-mapping>
+    <servlet-name>fileDownloadServlet</servlet-name>
+    <url-pattern>/file/fileDownload</url-pattern>
+</servlet-mapping>
+
+----
+
+== fileDownload.html
+
+[source,html]
+----
+<html>
+
+    <head>
+        <meta charset="UTF-8">
+        <title>file download</title>
+    </head>
+
+    <body>
+        <h1>1.pdf</h1>
+        <p>
+            <a href="/file/fileDownload?fileName=1.pdf">1.pdf - 다운로드</a>
+        </p>
+        <h1>2.pdf</h1>
+        <p>
+            <a href="/file/fileDownload?fileName=2.pdf">2.pdf - 다운로드</a>
+        </p>
+        <h1>file not found</h1>
+        <p>
+            <a href="/file/fileDownload?fileName=foo.pdf">foo.pdf - 다운로드(400 bad request)</a></a>
+        </p>
+    </body>
+
+</html>
+----

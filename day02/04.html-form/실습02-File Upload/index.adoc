@@ -1,0 +1,147 @@
+= File Upload
+
+== java EE 5 까지
+
+* Apache’s Common File Upload
+* https://commons.apache.org/proper/commons-fileupload/
+
+== java EE 6 부터
+
+* Java EE 6 with Servlet 3.0
+** 내장된 File upload API를 사용.
+* Apache Tomcat 7.0 이상
+
+== @MultipartConfig annotation
+
+|===
+|*Name*  | *Type* |*Required* |*Description*
+|*fileSizeThreshold* |_int_ |Optional |파일을 메모리에 저장할지 디스크에 저장할지 결정하는 임계값을 설정합니다.<br>파일 크기가 이 값보다 작으면 메모리에 저장되고, 이 값을 초과하면 디스크에 저장됩니다.<br>기본값은 0이며, 모든 파일이 디스크에 저장됩니다. 
+|*location* |_String_ |Optional |업로드 파일이 저장되는 디렉토리 지정 
+|*maxFileSize* |_long_ |Optional |업로드 파일의 최대 크기 지정 
+|*maxRequestSize* |_long_ |Optional |요청의 최대 크기를 지정 
+|===
+
+[source,java]
+----
+@MultipartConfig(
+        fileSizeThreshold   = 1024 * 1024 * 1,  // 1 MB
+        maxFileSize         = 1024 * 1024 * 10, // 10 MB
+        maxRequestSize      = 1024 * 1024 * 100, // 100 MB
+        location            = "c:/Uploads"
+)
+
+----
+
+== *Multipart*
+
+[source,java]
+----
+    for (Part part : request.getParts()) {
+        String fileName = extractFileName(part);
+        part.write(fileName);
+    }
+
+----
+
+== form
+* 1.pdf, 2.pdf를 이용하여 업로드 테스트 진행.
+    ** link:../resources/1.pdf[1.pdf,window=_blank]
+    ** link:../resources/2.pdf[2.pdf,window=_blank]
+
+* fileUpload.html
+
+[source,html]
+----
+<html>
+
+    <head>
+        <meta charset="UTF-8">
+        <title>file upload</title>
+    </head>
+
+    <body>
+        <form method="post" action="/file/fileUpload" enctype="multipart/form-data">
+            <input type="text" name="userId"  placeholder="user Id" required /> <br/>
+            <input type="text" name="userPassword" placeholder="user password" required /> <br/>
+            <input type="file" name="file1" /><br />
+            <input type="file" name="file2" /><br />
+            <input type="submit" />
+        </form>
+    </body>
+
+</html>
+
+----
+
+== FileUploadServlet
+
+[source,java]
+----
+@MultipartConfig(
+        fileSizeThreshold   = 1024 * 1024 * 1,  // 1 MB
+        maxFileSize         = 1024 * 1024 * 10, // 10 MB
+        maxRequestSize      = 1024 * 1024 * 100, // 100 MB
+        //location 위치는 적절히 변경합니다.
+        location = "/Users/nhn/IdeaProjects/servlet:jsp/2일차/src/main/upload/temp"
+)
+@Slf4j
+public class FileUploadServlet extends HttpServlet {
+    private static final String CONTENT_DISPOSITION = "Content-Disposition";
+    private static final String UPLOAD_DIR = "/Users/nhn/IdeaProjects/servlet:jsp/2일차/src/main/upload";
+
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        for(Part part : req.getParts()){
+            String contentDisposition = part.getHeader(CONTENT_DISPOSITION);
+
+            if (contentDisposition.contains("filename=")) {
+                String fileName = extractFileName(contentDisposition);
+
+                if (part.getSize() > 0) {
+                    part.write(UPLOAD_DIR + File.separator + fileName);
+                    part.delete();
+                }
+            } else {
+                String formValue = req.getParameter(part.getName());
+                log.error("{}={}", part.getName(), formValue);
+            }
+        }
+        resp.sendRedirect("/");
+    }
+
+    private String extractFileName(String contentDisposition) {
+        log.error("contentDisposition:{}",contentDisposition);
+        for (String token : contentDisposition.split(";")) {
+            if (token.trim().startsWith("filename")) {
+                return token.substring(token.indexOf("=")+2, token.length()-1);
+            }
+        }
+        return null;
+    }
+}
+
+----
+
+== web.xml
+
+[source,xml]
+----
+<servlet>
+        <servlet-name>fileUploadServlet</servlet-name>
+        <servlet-class>com.nhnacademy.hello.file.FileUploadServlet</servlet-class>
+</servlet>
+<servlet-mapping>
+    <servlet-name>fileUploadServlet</servlet-name>
+    <url-pattern>/file/fileUpload</url-pattern>
+</servlet-mapping>
+
+----
+
+== log
+
+----
+14:40:55.139 [http-nio-8080-exec-2] ERROR com.nhnacademy.hello.file.FileUploadServlet - userId=marco
+14:40:55.139 [http-nio-8080-exec-2] ERROR com.nhnacademy.hello.file.FileUploadServlet - userPassword=1234
+14:40:55.139 [http-nio-8080-exec-2] ERROR com.nhnacademy.hello.file.FileUploadServlet - contentDisposition:form-data; name="file1"; filename="1.pdf"
+14:40:55.142 [http-nio-8080-exec-2] ERROR com.nhnacademy.hello.file.FileUploadServlet - contentDisposition:form-data; name="file2"; filename="2.pdf"
+----

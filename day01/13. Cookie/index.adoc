@@ -1,0 +1,104 @@
+= Cookie
+
+____
+
+사용자가 웹사이트를 방문할 때
+해당 웹사이트의 웹서버에 의해 생성되어
+사용자의 브라우저에 저장되는
+작은 데이터 블록
+
+____
+
+== javax.servlet.http.Cookie
+
+[source,java]
+----
+public class Cookie implements Cloneable, Serializable {
+    public Cookie(String name, String value) { /* .. */ }
+
+    private String name;
+    private String value;
+
+    private String comment;
+    private String domain;
+    private int maxAge = -1;                // seconds. 0면 삭제. 음수는 브라우저 닫으면 삭제됨
+    private String path;
+    private boolean secure;                 // true면 https에서만 쿠키 전송
+    private int version = 0;
+    private boolean isHttpOnly = false;     // true면 javascript로 쿠키 접근 못함
+
+    // ...
+}
+
+----
+
+== 쿠키 읽어오기
+
+=== *모든 쿠키 다 가져오기*
+
+[source,java]
+----
+Cookie[] cookies = req.getCookies();
+
+----
+
+=== *특정 쿠키 하나만 가져오기*
+
+[source,java]
+----
+public static Cookie getCookie(HttpServletRequest req, String name) {
+    return Optional.ofNullable(req.getCookies())
+                   .flatMap(cookies -> Arrays.stream(cookies)
+                                             .filter(c -> c.getName().equals(name))
+                                             .findFirst())
+                   .orElse(null);
+}
+
+----
+
+* *<span style="color:#e11d21">CookieUtils.java 생성</span>*
+[source,java]
+----
+public final class CookieUtils {
+
+    private CookieUtils() {
+        throw new IllegalStateException("Utility class");
+    }
+
+    public static Cookie getCookie(HttpServletRequest req, String name) {
+        return Optional.ofNullable(req.getCookies())
+                .flatMap(cookies -> Arrays.stream(cookies)
+                        .filter(c -> c.getName().equals(name))
+                        .findFirst())
+                .orElse(null);
+    }
+}
+
+----
+
+== Optional.of vs Optional.ofNullable 차의점은?
+
+* Optional.of 는 전달되는 인자값이 Null이 아닌경우에 사용
+* null인경우 Null Point Exception 발생함.
+* Optional.Nullable은 전달되는 인자값이 Null일 가능성이 있을때 사용.
+
+== map vs flatMap 차의점?
+
+* map 은 각각 단일 Stream으로 반환
+* flatMap 하나의 Stream 반환
+
+== CookieUtils를 이용해서 cookie value 얻기
+
+[source,java]
+----
+Cookie cookie = CookieUtils.getCookie(req, "SESSION");
+String cookieValue = cookie.getValue();
+----
+
+== 쿠키 저장
+
+[source,java]
+----
+Cookie cookie = new Cookie("notToday", "Y");
+response.addCookie(cookie);
+----

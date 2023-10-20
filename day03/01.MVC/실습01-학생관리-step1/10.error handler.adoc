@@ -1,0 +1,121 @@
+= Error handler
+
+* error 발생하면 -&gt;/error 통해서 구현합니다.
+* error 발생시 error에대한 관련정보는 이미 request에 담겨있습니다.
+** 아래 상수값을 참고하여 처리합니다.
+* https://tomcat.apache.org/tomcat-8.5-doc/servletapi/javax/servlet/RequestDispatcher.html
+
+== RequestDispatcher interface
+
+[source,java]
+----
+public interface RequestDispatcher {
+    String FORWARD_REQUEST_URI = "javax.servlet.forward.request_uri";
+    String FORWARD_CONTEXT_PATH = "javax.servlet.forward.context_path";
+    String FORWARD_MAPPING = "javax.servlet.forward.mapping";
+    String FORWARD_PATH_INFO = "javax.servlet.forward.path_info";
+    String FORWARD_SERVLET_PATH = "javax.servlet.forward.servlet_path";
+    String FORWARD_QUERY_STRING = "javax.servlet.forward.query_string";
+    String INCLUDE_REQUEST_URI = "javax.servlet.include.request_uri";
+    String INCLUDE_CONTEXT_PATH = "javax.servlet.include.context_path";
+    String INCLUDE_PATH_INFO = "javax.servlet.include.path_info";
+    String INCLUDE_MAPPING = "javax.servlet.include.mapping";
+    String INCLUDE_SERVLET_PATH = "javax.servlet.include.servlet_path";
+    String INCLUDE_QUERY_STRING = "javax.servlet.include.query_string";
+    String ERROR_EXCEPTION = "javax.servlet.error.exception";
+    String ERROR_EXCEPTION_TYPE = "javax.servlet.error.exception_type";
+    String ERROR_MESSAGE = "javax.servlet.error.message";
+    String ERROR_REQUEST_URI = "javax.servlet.error.request_uri";
+    String ERROR_SERVLET_NAME = "javax.servlet.error.servlet_name";
+    String ERROR_STATUS_CODE = "javax.servlet.error.status_code";
+
+    void forward(ServletRequest var1, ServletResponse var2) throws ServletException, IOException;
+
+    void include(ServletRequest var1, ServletResponse var2) throws ServletException, IOException;
+}
+
+----
+
+== ErrorServlet
+
+[source,java]
+----
+@WebServlet(name = "errorServlet", urlPatterns = "/error")
+public class ErrorServlet extends HttpServlet {
+
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        req.setAttribute("status_code", req.getAttribute(ERROR_STATUS_CODE));
+
+        //todo exception_type 
+        //todo message
+        //todo exception
+        //todo request_uri
+
+        //todo /error.jsp forward 처리
+    }
+
+}
+
+----
+
+== web.xml
+
+[source,xml]
+----
+<!-- 404 -> /error  설정 -->
+<error-page>
+    <error-code></error-code>
+    <location></location>
+</error-page>
+
+<!-- todo java.lang.Exception 발생시 -> /error 설정 -->
+<error-page>
+    <exception-type></exception-type>
+    <location></location>
+</error-page>
+
+----
+
+== error.jsp
+
+[source,html]
+----
+<%@ page contentType="text/html;charset=UTF-8" language="java" trimDirectiveWhitespaces="true" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jstl/core" %>
+
+<html>
+<head>
+    <title>Error Page</title>
+    <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <table>
+      <tbody>
+        <tr>
+            <th>status_code</th>
+            <td><!-- todo status_code 출력 --></td>
+        </tr>
+        <tr>
+            <th>exception_type</th>
+            <td><!-- todo exception_type 출력 --></td>
+        </tr>
+        <tr>
+            <th>message</th>
+            <td><!-- todo message 출력 --></td>
+        </tr>
+        <tr>
+            <th>exception</th>
+            <td><!-- todo exception 출력 --></td>
+        </tr>
+        <tr>
+            <th>request_uri</th>
+           <td><!-- todo request_uri 출력 --></td>
+        </tr>
+      </tbody>
+
+  </table>
+</body>
+</html>
+----

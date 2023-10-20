@@ -1,0 +1,47 @@
+= Listener
+
+* Servlet Container가 수행한 특정한 타입의 동작(이벤트)을 감지하여
+* 해당 이벤트에 대해 별도의 작업을 수행하는 객체
+
+== Listener의 종류
+
+|===
+|Event Source |Event |Event Listener | 
+
+|ServletContext |ServletContextEvent |*ServletContextListener* |*<웹 애플리케이션 시작, 종료*
+|ServletContext |ServletContextAttributeEvent |ServletContextAttributeListener |ServletContext 속성 변경 
+|HttpSession |HttpSessionEvent |*HttpSessionListener* |*세션 시작, 종료*
+|HttpSession |HttpSessionBindingEvent |HttpSessionAttributeListener |세션 속성 변경 
+|ServletRequest |ServletRequestEvent |ServletRequestListener |ServletRequest 생성, 종료 
+|ServletRequest |ServletRequestAttributeEvent |ServletRequestAttributeListener |ServletRequest 속성 변경
+|===
+
+== ServletContainerListener interface 및 Listener 등록
+
+=== javax.servlet.ServletContextListener interface
+
+[source,java]
+----
+public interface ServletContextListener extends EventListener {
+    default public void contextInitialized(ServletContextEvent sce) {}
+    default public void contextDestroyed(ServletContextEvent sce) {}
+}
+
+----
+
+[source,xml]
+----
+<listener>
+    <listener-class>com.nhnacademy.listener.WebAppListener</listener-class>
+</listener>
+----
+
+=== java.servlet.HttpSessionListener interface
+
+[source,java]
+----
+public interface HttpSessionListener extends EventListener {
+    default public void sessionCreated(HttpSessionEvent se) {}
+    default public void sessionDestroyed(HttpSessionEvent se) {}
+}
+----

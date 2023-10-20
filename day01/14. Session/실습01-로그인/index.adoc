@@ -1,0 +1,24 @@
+= Session을 이용한 로그인
+
+== GET /login
+
+* 세션이 없으면 login.html로 이동
+* 세션이 있으면 로그인 성공이라는 텍스트와 세션에 있는 로그인한 아이디 출력
+
+== *GET /login.html*
+
+* 아이디, 비밀번호를 입력할 수 있는 html form 제공
+* submit 버튼 누르면 POST /login로 form 전송
+
+== *POST /login*
+
+* parameter로 전달된 아이디, 비밀번호와
+** *<init-param>* 에 설정된 아이디, 비밀번호 대조
+*** id = admin
+*** pwd = 1234
+* 맞으면
+** 세션 생성
+** 세션에 로그인한 아이디를 attribute로 등록
+** /login 으로 이동
+* 틀리면 /login.html로 이동
+

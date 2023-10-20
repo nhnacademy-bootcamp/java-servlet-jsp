@@ -1,0 +1,273 @@
+* Member.java
+[source,java]
+----
+public class Member {
+
+    public enum Role{
+        ADMIN, USER, MANAGER, NONE
+    }
+
+    private final String id;
+    private final String name;
+    private final String password;
+    private final Role role;
+
+    private Member(String id, String name, String password,  Role role){
+        this.id=id;
+        this.name=name;
+        this.password=password;
+        this.role = role;
+    }
+
+    public static Member createAdmin(String id, String name, String password){
+        return new Member(id,name, password, Role.ADMIN);
+    }
+
+    public static Member createUser(String id, String name,String password){
+        return new Member(id,name,password,Role.USER);
+    }
+
+    public static Member createManager(String id, String name,String password){
+        return new Member(id,name,password,Role.MANAGER);
+    }
+
+    public static Member createUncertifiedMember(String id, String name ,String password){
+        return new Member(id,name,password,Role.NONE);
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public boolean hasRole(Role role){
+        return this.role.equals(role) ? true : false;
+    }
+}
+
+----
+
+* Request.java
+[source,java]
+----
+public class Request {
+    private final String path;
+
+    private final Map<String, Object> data = new HashMap();
+    protected Request(String path){
+        this.path = path;
+    }
+
+    public String getPath() {
+        return path;
+    }
+
+    public void put(String key, Object value){
+        data.put(key,value);
+    }
+    public Object get(String key){
+        return data.get(key);
+    }
+}
+----
+
+* Filter.java
+[source,java]
+----
+public interface Filter {
+    void doFilter(Request request, FilterChain filterChain);
+}
+----
+
+* AdminFilter
+[source,java]
+----
+import java.util.Objects;
+public class AdminPageFilter implements Filter{
+    @Override
+    public void doFilter(Request request, FilterChain filterChain) {
+
+        if( request.getPath().equals("/admin") ){
+            Member member = (Member) request.get("member");
+            if(Objects.nonNull(member)){
+                if( member.hasRole(Member.Role.ADMIN) ){
+                    System.out.println("path:" + request.getPath() + " : has ADMIN");
+                    filterChain.doFilter(request);
+                }else {
+                    System.out.println("path:" + request.getPath() + " : has not ADMIN");
+                }
+            }
+        }else{
+            System.out.println("AdminPageCheckFilter : 다음 필터로 넘김! ");
+            filterChain.doFilter(request);
+        }
+    }
+}
+----
+
+* MyPageFilter.java
+[source,java]
+----
+public class MyPageFilter implements Filter {
+
+    @Override
+    public void doFilter(Request request,FilterChain filterChain) {
+        if(request.getPath().equals("/mypage")){
+            Member member = (Member) request.get("member");
+            if(member.hasRole(Member.Role.USER)){
+                System.out.println("path:" + request.getPath() + " member role has USER : true");
+                filterChain.doFilter(request);
+            }else{
+                System.out.println("path:" + request.getPath() + " member role has USER : false");
+            }
+        }else{
+            System.out.println("MyPageCheckFilter : 다음 필터로 넘김! ");
+
+            //다음 filter로 넘김
+            filterChain.doFilter(request);
+        }
+    }
+}
+----
+
+* FilterChain
+[source,java]
+----
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+
+public class FilterChain {
+    private List<Filter> filters = new LinkedList<>();
+    private Iterator iterator;
+
+    public void addFilter(Filter filter){
+        this.filters.add(filter);
+        iterator = filters.iterator();
+    }
+
+    public void doFilter(Request request){
+
+        if(iterator.hasNext()){
+            Filter nextFilter = (Filter) iterator.next();
+            nextFilter.doFilter(request,this);
+        }else{
+
+            //요청 결과값 출력
+            if(request.getPath().equals("/mypage")){
+                new MyPageResponse().doResponse(request);
+            }else if(request.getPath().equals("/admin")){
+                new AdminPageResponse().doResponse(request);
+            }
+
+        }
+    }
+
+}
+----
+
+* HttpRequest.java
+[source,java]
+----
+public class HttpRequest {
+    private final FilterChain filterChain = new FilterChain();
+
+    public HttpRequest(){
+        initFilter();
+    }
+
+    public void doRequest(Request request){
+        filterChain.doFilter(request);
+    }
+
+    private void initFilter(){
+        filterChain.addFilter(new MyPageFilter());
+        filterChain.addFilter(new AdminPageFilter());
+    }
+
+}
+----
+
+* Response.java
+[source,java]
+----
+public interface Response {
+    void doResponse(Request request);
+}
+----
+
+* AdminPageResponse.java
+[source,java]
+----
+public class AdminPageResponse implements Response  {
+    @Override
+    public void doResponse(Request request) {
+        System.out.println("###### response:AdminPageResponse #####");
+        Member member = (Member) request.get("member");
+        System.out.println("아이디:" + member.getId());
+        System.out.println("이름:" + member.getName());
+        System.out.println("등급:" + Member.Role.ADMIN);
+        System.out.println("이메일: marco@nhnacademy.com");
+        System.out.println("do something ... ADMIN ...");
+    }
+}
+----
+
+* MyPageResponse.java
+[source,java]
+----
+public class MyPageResponse implements Response {
+    @Override
+    public void doResponse(Request request) {
+        System.out.println("###### response:MyPageResponse #####");
+        Member member = (Member) request.get("member");
+        System.out.println("아이디:" + member.getId());
+        System.out.println("이름:" + member.getName());
+        System.out.println("등급:" + Member.Role.USER);
+        System.out.println("주소:" + "경남 김해시 내외동 정우빌딩 5층 NHN아카데미");
+        System.out.println("do something ... USER ...");
+    }
+}
+----
+
+* ChainMain.java
+[source,java]
+----
+public class ChainMain {
+    public static void main(String[] args) {
+
+        Request myPageRequest = new Request("/mypage");
+        myPageRequest.put("member",Member.createUser("marco","마르코","1234"));
+
+        Request adminPageRequest = new Request("/admin");
+        adminPageRequest.put("member",Member.createAdmin("admin","관리자","1234"));
+
+        System.out.println("############## /mypage 요청 ############## ");
+        HttpRequest httpRequest1 = new HttpRequest();
+        httpRequest1.doRequest(myPageRequest);
+
+        System.out.println("############## /admin 요청 ############## ");
+        HttpRequest httpRequest2 = new HttpRequest();
+        httpRequest2.doRequest(adminPageRequest);
+
+    }
+}
+----
+
+== 연습문제1
+
+* 1. 주문페이지를 추가하세요.
+** path : /order
+** 주문페이지는 회원은 모두 접근할 수 있습니다. ( NONE ) 제외한 모든 회원은 접근가능 합니다.
+** ADMIN, USER, MANAGER
+** 주문페이지 결과는  OrderResponse.java 파일에 구현하세요.
+*** 주문내역은 적당히 System.out.println을 이용하여 표현하세요
+* 2.  /main 경로를 호출하면 NotFoundResponse.java 를 구현하세요
+** /main 경로에 대해서 구현이 안되어 있음으로 "존재하지 않는 페이지!" 노출하도록 구현하세요.

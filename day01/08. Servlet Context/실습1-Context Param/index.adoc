@@ -1,0 +1,45 @@
+= context-param에 설정한 url 정보를 서로 다른 Servlet 에서 조회하기
+
+== web.xml
+
+[source,xml]
+----
+<context-param>
+    <param-name>url</param-name>
+    <param-value>https://nhnacademy.com/</param-value>
+</context-param>
+
+----
+
+== Servlet
+
+[source,java]
+----
+    getServletContext().getInitParameter("url")
+----
+
+== 대상 Servlet
+
+* MultiServlet
+
+[source,java]
+----
+public class MultiServlet extends HttpServlet {
+    private static final Logger log = Logger.getLogger(MultiServlet.class.getName());
+
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String[] values = req.getParameterValues("class");
+        String url = getServletContext().getInitParameter("url");
+        try(PrintWriter out = resp.getWriter()){
+            out.println(String.join(",", values));
+            out.printf("url:%s\n",url);
+        }catch (IOException ex){
+            log.info(ex.getMessage());
+        }
+    }
+}
+----
+
+* CounterServlet
+** 적용하기

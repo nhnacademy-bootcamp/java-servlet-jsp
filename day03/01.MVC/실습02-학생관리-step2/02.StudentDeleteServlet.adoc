@@ -1,0 +1,27 @@
+= StudentDeleteServlet
+
+[source,java]
+----
+@Slf4j
+@WebServlet(name = "studentDeleteServlet", urlPatterns = "/student/delete")
+public class StudentDeleteServlet extends HttpServlet {
+
+    private StudentRepository studentRepository;
+
+    @Override
+    public void init(ServletConfig config) throws ServletException {
+        studentRepository = (StudentRepository) config.getServletContext().getAttribute("studentRepository");
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String id = req.getParameter("id");
+
+        log.error("id:{}",id);
+        studentRepository.deleteById(id);
+
+        //resp.sendRedirect("/student/list");
+        //todo redirect:/student/list.do 적용
+    }
+}
+----

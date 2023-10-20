@@ -1,0 +1,7 @@
+= web.xml 에서 남은 servlet, filter, listener 설정을 모두 annotation 으로 변경하기
+
+* @WebServlet
+* @WebInitParam
+* @WebFilter
+* @WebListener
+* @MultipartConfig

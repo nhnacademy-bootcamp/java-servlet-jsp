@@ -1,0 +1,25 @@
+= 방문자 카운터 재)구현
+
+* 방문수를 저장할 파일 위치는 web.xml에 지정
+
+[source,xml]
+----
+<context-param>
+    <param-name>counterFilterName</param-name>
+    <param-value>counter.dat</param-value>
+</context-param>
+----
+
+* ServletContextListener를 이용해서
+    ** 웹 애플리케이션 초기화 시 방문수 저장한 파일에서 counter 값을 읽어온다
+        *** 경로 : /WEB-INF/classes/counter.dat
+        *** file 입출력
+        **** BufferedReader, BufferedWriter 사용합니다.
+        **** charset = UTF-8
+    ** 읽어온 counter 값은 ServletContext 에 속성 값으로 저장
+* *CounterFilter*를 만들어서
+    ** 모든 Servlet 요청에 대해 counter 1씩 증가한 다음
+    ** 변경된 counter 값은 ServletContext 에 속성으로 저장
+* *ServletContextListener를 이용해서*
+    ** 웹 애플리케이션 종료 시에 counter 값을 방문수 저장 파일에 기록
+* 웹 애플리케이션 시작/종료를 반복했을 때 counter 수가 연속적으로 증가하는 지 확인

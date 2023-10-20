@@ -1,0 +1,37 @@
+= Maven Scope
+
+=== Compile
+
+* default
+* Compile 시점에 필요합니다.
+
+=== Runtime
+
+* Runtime 시점에 필요합니다.
+* Compile 시점에는 필요하지 않습니다.
+* 즉 실행할 때만 필요함.
+* EX) JDBC Driver
+
+=== Provided
+
+* Compile 시점에 필요합니다.
+* Runtime 시점에는 Container(Tomcat)가 제공
+* 즉 실행 시 어디선가( Tomcat or Jdk , Server 환경 ) 제공됨
+* EX) Servlet API
+[source,xml]
+----
+<dependencies>
+    <dependency>
+        <groupId>jakarta.servlet</groupId>
+        <artifactId>jakarta.servlet-api</artifactId>
+        <version>4.0.4</version>
+        <scope>provided</scope>
+    </dependency>
+</dependencies>
+----
+
+=== Test
+
+* Compile 시점에 필요합니다.
+* application 배포 시점에는 제외됩니다.
+* EX) Junit

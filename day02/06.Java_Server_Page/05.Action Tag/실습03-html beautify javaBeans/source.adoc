@@ -1,0 +1,62 @@
+= Beautifier JavaBeans구현
+
+== HtmlBeautifier.java
+
+[source,java]
+----
+public class HtmlBeautifier implements Serializable {
+
+    public HtmlBeautifier() {}
+
+    private String html;
+
+    public String getHtml() {
+        return Jsoup.parse(this.html).html();
+    }
+
+    public void setHtml(String html) {
+        this.html = html;
+    }
+
+}
+
+----
+
+== beautify.html
+
+[source,html]
+----
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>정리되지 않은 Html 내용을 입력받아 beautify 해서 응답</title>
+    </head>
+    <body>
+    <form method="post" action="beautify.jsp" >
+        <textarea name="html" rows="10" cols="200"></textarea>
+        <p>
+            <button type="submit">전송</button>
+        </p>
+    </form>
+    </body>
+</html>
+
+----
+
+== beautify.jsp
+
+[source,xml]
+----
+<%@ page contentType="text/plan;charset=UTF-8" language="java" trimDirectiveWhitespaces="true" %>
+<jsp:useBean id="htmlBeautifier" scope="request" class="com.nhnacademy.jsp.beans.HtmlBeautifier" />
+<jsp:setProperty name="htmlBeautifier" property="html" param="html" />
+<jsp:getProperty name="htmlBeautifier" property="html" />
+
+----
+
+== param 과 property가 일치하면 생략가능
+
+[source,xml]
+----
+<jsp:setProperty name="htmlBeautifier" property="html" />
+----

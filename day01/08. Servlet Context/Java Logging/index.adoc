@@ -1,0 +1,68 @@
+= Java Logging
+
+== Log Level
+
+* 6 fatal : error 보다 더 심각한 오류를 출력
+* 5 **error : 오류 출력**
+* 4 warn : 경고 정보를 출력
+* 3 **info : 일반적인 정보 출력**
+* 2 **debug : 디버깅 목적으로 사용**
+* 1 trace : debug 보다 더 상세한 정보를 나타낼 경우에 사용.
+____
+ 예를들어 Log Level 을 info 로 설정한다면 info를 포함한 상위 warn, error, fatal 출력됩니다.
+____
+
+=== 일반적으로 개발시 : debug를 사용.
+
+=== 서버에 배포되었을 때 : `error` or `warn` 사용
+* 다만 서버에서 디버깅 용도로 info, debug 등등 상황에 맞게 일시적으로 설정해서 사용할 수 있음.
+* *운영서버에서 디버깅 할 수 있는 유일한 수단*
+
+== pom.xml
+
+[source,xml]
+----
+<dependency>
+    <groupId>org.projectlombok</groupId>
+    <artifactId>lombok</artifactId>
+    <version>1.18.24</version>
+</dependency>
+
+<dependency>
+    <groupId>ch.qos.logback</groupId>
+    <artifactId>logback-classic</artifactId>
+    <version>1.2.11</version>
+</dependency>
+
+----
+
+== USE
+
+[source,java]
+----
+@Slf4j
+public class RequestServlet extends HttpServlet {
+
+    // ...
+        cache(IOException ex){
+            log.error("exception : {}", ex);
+        }
+    // ...
+}
+
+----
+
+=== Delombok
+
+[source,java]
+----
+private static final Logger log = org.slf4j.LoggerFactory.getLogger(RequestServlet.class);
+----
+
+image:https://www.slf4j.org/images/concrete-bindings.png[]
+
+== Refference
+
+* https://ko.wikipedia.org/wiki/%ED%8D%BC%EC%82%AC%EB%93%9C_%ED%8C%A8%ED%84%B4[위키-파사드]
+* https://www.slf4j.org/manual.html[slf4j]
+* https://github.com/nhnacademy-bootcamp/java-dev-settings/tree/main/docs/05.logging[개발환경설정-05,Logging]

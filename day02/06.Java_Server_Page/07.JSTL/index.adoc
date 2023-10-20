@@ -1,0 +1,376 @@
+= JSTL (JSP Standard Tag Libraray)
+
+* JSP 확장 태그
+
+== 의존 라이브러리 추가
+
+* pom.xml
+[source,xml]
+----
+<dependency>
+    <groupId>org.glassfish.web</groupId>
+    <artifactId>jakarta.servlet.jsp.jstl</artifactId>
+    <version>1.2.6</version>
+    <scope>runtime</scope>
+</dependency>
+
+----
+
+== 태그 라이브러리 (종류)
+
+|===
+|prefix |name |URI |내용 
+
+|c |core |http://java.sun.com/jsp/jstl/core |변수 지원, URL 관리, 흐름 제어 등 
+|fn |function |http://java.sun.com/jsp/jstl/functions |문자열 조작 등 
+|fmt |formatting |http://java.sun.com/jsp/jstl/fmt |로케일, 타임존, 날짜, 시간, 화폐 포맷팅 등 
+|x |xml |http://java.sun.com/jsp/jstl/xml |XML 처리 
+|sql |sql |http://java.sun.com/jsp/jstl/sql |데이터 소스 설정, SQL 쿼리 수행 등 
+|===
+
+== core tag library
+
+* taglib Directive 선언
+[source,xml]
+----
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+----
+
+== 일반
+
+* &lt;c:out&gt; = &lt;%= %&gt;
+* &lt;c:set&gt;
+ * 변수 생성, 변수 값 할당
+ * JSP 로컬 변수가 아닌 지정한 scope의 저장소에 저장됨
+* &lt;c:remove&gt; : 변수 삭제
+[source,xml]
+----
+<%@ page contentType="text/html;charset=UTF-8" language="java" trimDirectiveWhitespaces="true" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+
+<html>
+<head>
+    <title>Title</title>
+</head>
+<body>
+    <c:set var="email" value="marco@nhnacademy.com" scope="request" />    <c:set var="name">marco</c:set>
+    <c:out value="1" /><br />
+    <c:out value="${email}" /><br />
+    <c:out value="${pageScope.email}" /><br />
+    <c:out value="${requestScope.email}" /><br />
+    <c:out value="${name}" /><br />
+    <c:remove var="name" />    removedName:<c:out value="${name}" /><br />
+</body>
+</html>
+----
+
+== core tag library
+
+=== 조건문/반복문
+
+* &lt;c:if&gt;
+* &lt;c:choose&gt;
+* &lt;c:forEach&gt;
+[source,xml]
+----
+<%@ page contentType="text/html;charset=UTF-8" language="java" trimDirectiveWhitespaces="true" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<html>
+<head>
+    <title>jstl - 조건문/반복문</title>
+</head>
+<body>
+
+<c:if test="${ param.email.contains('@nhnacademy.com') }" var="testResult">
+    <p><c:out value="${param.email}" /> is one of nhnacademy email addresses.</p>
+</c:if>
+<p>test result is <c:out value="${testResult}" /></p>
+
+<c:set var="role" value="admin" />
+<c:choose>
+    <c:when test="${role == 'member'}">
+        <p>멤버입니다.</p>
+    </c:when>
+    <c:when test="${role =='guest'}">
+        <p>손님은 접근이 제한됩니다.</p>
+    </c:when>
+    <c:when test="${role == 'admin'}">
+        <p>관리자 권한으로 실행됩니다.</p>
+    </c:when>
+    <c:otherwise>
+       <p>로그인하세요.</p>
+    </c:otherwise>
+</c:choose>
+
+<c:set var="browsers" value="${['Chrome' , 'Safari', 'Firefox']}" />
+<table>
+
+    <tr>
+        <th>Browser</th>
+    </tr>
+
+    <c:forEach var="br" items="${browsers}">
+        <tr>
+            <td>${br}</td>
+        </tr>
+    </c:forEach>
+</table>
+</body>
+</html>
+----
+
+=== 기타
+
+* &lt;c:url&gt;
+** &lt;c:param&gt;
+* &lt;c:redirect&gt;
+
+=== jstl3.jsp
+
+[source,xml]
+----
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<html>
+<head>
+    <title>c:url, c:param - c:redirect </title>
+</head>
+<body>
+    <c:url var="redirectUrl" value="/jstl/hello.jsp">
+        <c:param name="page" value="1" />
+        <c:param name="size" value="15"/>
+    </c:url>
+    redirect url is ${redirectUrl}
+
+    <c:redirect url="${redirectUrl}" />
+</body>
+</html>
+----
+
+=== hello.jsp
+
+[source,xml]
+----
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<html>
+<head>
+    <title>c:url, c:param - c:redirect </title>
+</head>
+<body>
+    <c:url var="redirectUrl" value="/jstl/hello.jsp">
+        <c:param name="page" value="1" />
+        <c:param name="size" value="15"/>
+    </c:url>
+    redirect url is ${redirectUrl}
+
+    <c:redirect url="${redirectUrl}" />
+</body>
+</html>
+----
+
+== function tag library
+
+=== taglib Directive 선언
+
+[source,xml]
+----
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+----
+
+=== 함수
+
+* fn:startsWith()
+* fn:endsWith()
+* fn:contains()
+* fn:containsIgnoreCase()
+* fn:indexOf()
+* fn:trim()
+* fn:toLowerCase()
+* fn:toUpperCase()
+* fn:replace()
+
+=== function tag library
+
+[source,xml]
+----
+<%@ page contentType="text/html;charset=UTF-8" language="java" trimDirectiveWhitespaces="true" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<html>
+    <head>
+        <title>function tag library</title>
+    </head>
+    <body>
+        <p><c:if test="${fn:startsWith('nhnacademy', 'nhn')}">true</c:if></p>
+        <p><c:if test="${fn:endsWith('nhnacademy', 'my')}">false</c:if></p>
+        <p><c:if test="${fn:contains('nhnacademy', 'aca')}">true</c:if></p>
+        <p><c:out value="${fn:trim('   nhnacademy ')}" />==nhnacademy</p>
+        <p><c:out value="${'nhnacademy'.toUpperCase()}" />==NHNACADEMY</p>
+    </body>
+</html>
+----
+
+== fmt
+
+=== 다국어 메세지 처리
+
+[source,xml]
+----
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+----
+
+* fmt:setLocale : 로케일 설정
+* fmt:bundle : Resource Bundle 로딩
+* fmt:setBundle
+** Resource Bundle 로딩
+** basename 으로 지정한 Resource Bundle을 로딩해서 var로 지정한 변수로 참조할 수 있도록 해 줌
+* fmt:bundle vs fmt:setBundle
+** fmt:bundle는 i18n 적용 scope 이 해당 태그 내로 한정
+** fmt:setBundle는 지정한 변수로 다른 곳에서 계속 참조 가능
+* fmt:message
+** 다국어 메세지 표시
+** fmt:setBundle 사용 시 bundle 속성에 Resource Bundler 변수를 지정
+*** Bundler 관련 설정 참고 : 1일차 - CooKie - 실습1 - ResourceBundle + Cookie
+**** https://nhnacademy.dooray.com/share/pages/0Cyc2JLUQtuFUwGTpR2zbw/3459559137440816319
+** hello 값 설정하기
+*** message.properties
+**** hello=hello
+*** message_en.properties
+**** hello=hello
+*** message_ko.properties
+**** hello=안녕하세요
+[source,xml]
+----
+<%@ page contentType="text/html;charset=UTF-8" language="java" trimDirectiveWhitespaces="true" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <title>formatting tag library</title>
+    </head>
+    <body>
+
+    <fmt:setLocale value="ko" />
+    <fmt:setBundle basename="message" var="message" />
+    <fmt:message key="hello" bundle="${message}" />
+    <fmt:bundle basename="message">
+        i say hello, you say <fmt:message key="hello" />
+    </fmt:bundle>
+
+    </body>
+</html>
+----
+
+=== fmt : 숫자 포맷팅
+
+* fmt:formatNumber : 숫자, 통화 포맷팅
+[source,xml]
+----
+<%@ page contentType="text/html;charset=UTF-8" language="java" trimDirectiveWhitespaces="true" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<html>
+<head>
+    <title>숫자 포맷팅</title>
+</head>
+<body>
+    <h1>locale : en_US</h1>
+    <fmt:setLocale value="en_US" />
+    <c:set var="price" value="12000" />
+    <p><fmt:formatNumber value="${price}" type="currency" /></p>
+
+    <h1>locale : ko_KR</h1>
+    <fmt:setLocale value="ko_KR" />
+    <p><fmt:formatNumber value="${price}" type="currency" /></p>
+    <h2>123000000 : 3자리 , 표현</h2>
+    <p><fmt:formatNumber value="123000000" type="number" maxFractionDigits="3" /></p>
+</body>
+</html>
+----
+
+=== fmt : 날짜 포맷팅
+
+* : 날짜 포맷팅
+[source,xml]
+----
+<fmt:formatDate value="date"
+  [type="{time|date|both}"]
+  [dateStyle="{default|short|medium|long|full}"]
+  [timeStyle="{default|short|medium|long|full}"]
+  [pattern="customPattern"]
+  [timeZone="timeZone"]
+  [var="varName"]
+  [scope="{page|request|session|application}"]/>
+----
+
+* fmt3.jsp
+[source,xml]
+----
+<%@ page import="java.util.Date" %>
+<%@ page contentType="text/html;charset=UTF-8" language="java" trimDirectiveWhitespaces="true" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<html>
+    <head>
+        <title>날짜 포맷팅</title>
+    </head>
+    <body>
+        <c:set var="today" value="<%= new Date() %>"/>
+        <p><fmt:formatDate value="${today}" type="date" dateStyle="short" /></p>
+        <p><fmt:formatDate value="${today}" type="time" timeStyle="medium" /></p>
+        <p><fmt:formatDate value="${today}" type="both" dateStyle="long" timeStyle="long" /></p>
+        <p><fmt:formatDate value="${today}" pattern="yyyy-MM-dd HH:mm:ss" /></p>
+    </body>
+</html>
+----
+
+== 예외 처리
+
+[source,xml]
+----
+<%@ page isErrorPage="true" %>
+----
+
+* 에러 처리용 페이지
+* JSP 내장 객체 exception 이용
+
+=== error.jsp
+
+[source,html]
+----
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page isErrorPage="true" %>
+<html>
+    <head>
+        <title>error page</title>
+    </head>
+    <body>
+        error name: <%= exception.getClass().getName() %> <br>
+        error message: <b><%= exception.getMessage() %></b>
+    </body>
+</html>
+----
+
+=== 다른 JSP 페이지에서는
+
+* page Directive의 errorPage 속성을 통해 에러 처리용 페이지 지정
+[source,xml]
+----
+<%@ page errorPage="error.jsp" %>
+----
+
+=== content.jsp
+
+[source,xml]
+----
+<%@ page contentType="text/html;charset=UTF-8" language="java" trimDirectiveWhitespaces="true" %>
+<%@ page errorPage="./error.jsp" %>
+<html>
+    <head>
+        <title>error page 테스트</title>
+    </head>
+    <body>
+        name 파라미터 값: <%= request.getParameter("userId").contains("marco") %>
+    </body>
+</html>
+----

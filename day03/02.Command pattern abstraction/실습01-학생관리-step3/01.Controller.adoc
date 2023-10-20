@@ -1,0 +1,61 @@
+= Controller
+
+== FrontServlet을 제외한 나머지 Servlet -&gt; Controller로 변경
+
+* StudentDeleteController
+* ErrorController
+* StudentListController
+* StudentRegisterController
+* StudentRegisterFormController
+* StudentUpdateController
+* StudentUpdateFormController
+* StudentViewController
+
+=== before : StudentDeleteServet
+
+[source,java]
+----
+
+@Slf4j
+@WebServlet(name = "studentDeleteServlet", urlPatterns = "/student/delete")
+public class StudentDeleteServlet extends HttpServlet {
+
+    private StudentRepository studentRepository;
+
+    @Override
+    public void init(ServletConfig config) throws ServletException {
+        studentRepository = (StudentRepository) config.getServletContext().getAttribute("studentRepository");
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String id = req.getParameter("id");
+
+        log.error("id:{}",id);
+        studentRepository.deleteById(id);
+
+        //resp.sendRedirect("/student/list");
+        //todo redirect 적용
+        req.setAttribute("view","redirect:/student/list.do");
+
+    }
+}
+
+----
+
+=== after : StudentDeleteServlet
+
+[source,java]
+----
+public class StudentDeleteController implements Command {
+    @Override
+    public String execute(HttpServletRequest req, HttpServletResponse resp) {
+        StudentRepository studentRepository = (StudentRepository) req.getServletContext().getAttribute("studentRepository");
+        String id = req.getParameter("id");
+        log.error("id:{}",id);
+        studentRepository.deleteById(id);
+        //view를 return 합니다.
+        return "redirect:/student/list.do";
+    }
+}
+----

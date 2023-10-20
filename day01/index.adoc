@@ -1,0 +1,35 @@
+= 목차
+
+* Web Application이란?
+* Web Server
+* CGI
+* Servlet 이란?
+* Java EE Architecture
+* WAS
+* Servlet 개발
+    ** 실습1-beautify html
+    ** 실습2-html form을 처리하는 Servlet
+    ** 실습3-초기화 파라미터
+    ** 실습4-CountServlet 개발
+* ServletContext
+    ** 실습1-context-param에 설정한 url 정보를 서로 다른 Servlet 에서 조회하기
+    ** 실습2-방문수 global카운터 Servlet 개발
+* java logging
+* ServletRequest,HttpServletRequest
+* ServletResponse,HttpServletResponse
+* web.xml
+* war
+* Cookie
+    ** 실습1 - ResourceBundle + Cookie
+    ** 실습2 - Domain & Cookie
+* Session
+    ** Session을 이용한 로그인
+    ** 실습 - 로그아웃
+
+== 과제
+
+* 과제 - NHN마트-Servlet version
+
+
+== 1일차 실습
+* link:resources/day01.zip[day01.zip]

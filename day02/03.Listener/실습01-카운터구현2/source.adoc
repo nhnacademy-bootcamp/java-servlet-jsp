@@ -1,0 +1,118 @@
+= context-param
+
+[source,xml]
+----
+<context-param>
+    <param-name>counterFileName</param-name>
+    <param-value>counter.dat</param-value>
+</context-param>
+
+----
+
+== /src/main/resources
+
+counter.dat 생성 ,default : 1000 설정
+
+== ServletContextListener
+
+=== ServletContextListener.java
+
+[source,java]
+----
+@Slf4j
+public class ServletContextListener implements javax.servlet.ServletContextListener {
+
+    @Override
+    public void contextInitialized(ServletContextEvent sce) {
+
+        ServletContext servletContext = sce.getServletContext();
+        String counterFileName = servletContext.getInitParameter("counterFileName");
+        String counterFilePath = "/WEB-INF/classes/" + counterFileName;
+        String realFilePath = servletContext.getRealPath(counterFilePath);
+        log.error("path:{}",realFilePath);
+
+        File target = new File(realFilePath);
+
+        if(target.exists()){
+            try (
+                    FileInputStream fileInputStream = new FileInputStream(target);
+                    InputStreamReader inputStreamReader = new InputStreamReader(fileInputStream, StandardCharsets.UTF_8);
+                    BufferedReader br = new BufferedReader(inputStreamReader);
+            ) {
+                long c = Long.parseLong(br.readLine());
+                servletContext.setAttribute("counter",c);
+            } catch (FileNotFoundException fileNotFoundException) {
+                fileNotFoundException.printStackTrace();
+            } catch (IOException ioException) {
+                ioException.printStackTrace();
+            }
+        }
+        log.error("init counter : {}", servletContext.getAttribute("counter"));
+    }
+
+    @Override
+    public void contextDestroyed(ServletContextEvent sce) {
+
+        ServletContext servletContext = sce.getServletContext();
+        String counterFileName = servletContext.getInitParameter("counterFileName");
+        String counterFilePath = "/WEB-INF/classes/" + counterFileName;
+        String realFilePath = servletContext.getRealPath(counterFilePath);
+
+        try(
+            FileOutputStream fileOutputStream = new FileOutputStream(realFilePath);
+            OutputStreamWriter outputStreamWriter = new OutputStreamWriter(fileOutputStream,StandardCharsets.UTF_8);
+            BufferedWriter fw = new BufferedWriter(outputStreamWriter);
+        ){
+            fw.write( String.valueOf(servletContext.getAttribute("counter")));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        System.out.println("distory-counter:" + servletContext.getAttribute("counter"));
+
+    }
+}
+
+----
+
+=== web.xml
+
+[source,xml]
+----
+<listener>
+     <listener-class>com.nhnacademy.hello.listener.ServletContextListener</listener-class>
+</listener>
+
+----
+
+== CounterFilter
+
+=== CounterFilter.java
+
+[source,java]
+----
+@Slf4j
+public class CounterFilter implements Filter {
+    @Override
+    public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
+        CounterUtils.increaseCounter(servletRequest.getServletContext());
+        filterChain.doFilter(servletRequest,servletResponse);
+        log.error("counter:{}",servletRequest.getServletContext().getAttribute("counter"));
+    }
+}
+
+----
+
+=== web.xml
+
+[source,xml]
+----
+<filter>
+    <filter-name>counterFilter</filter-name>
+    <filter-class>com.nhnacademy.hello.filter.CounterFilter</filter-class>
+</filter>
+<filter-mapping>
+    <filter-name>counterFilter</filter-name>
+    <url-pattern>/*</url-pattern>
+</filter-mapping>
+----

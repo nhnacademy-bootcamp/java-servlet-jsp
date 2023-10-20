@@ -1,0 +1,69 @@
+= 학생 관리(CRUD)
+
+== Gender
+
+* M - 남
+* F - 여
+[source,java]
+----
+public enum Gender {
+    M,F
+}
+
+----
+
+== Student.java
+
+[source,java]
+----
+public class Student {
+    //아이디
+    private  String id;
+    //이름
+    private  String name;
+    //성별
+    private  Gender gender;
+    //나이
+    private  int age;
+    //생성일
+    private LocalDateTime createdAt;
+
+    // ... java beans 특징을 고려하여 작성합니다.
+}
+
+----
+
+== StudentRepository.java
+
+[source,java]
+----
+public interface StudentRepository {
+
+    //학생-등록
+    void save(Student student);
+    //학생-수정
+    void update(Student student);
+    //학생-삭제
+    void deleteById(String id);
+    //학생-조회_by id
+    Student getStudentById(String id);
+    //학생-리스트
+    List<Student> getStudents();
+    //학생-아이디 존재여부
+    boolean existById(String id);
+
+}
+
+----
+
+== MapStudentRepository
+
+* StudentRepository 구현체
+* Student를 저장할 수 있는 HashMap 기반의 저장소.
+[source,java]
+----
+public class MapStudentRepository implements StudentRepository{
+    private Map<String, Student> studentsMap = new ConcurrentHashMap<>();
+    // ... 
+}
+----

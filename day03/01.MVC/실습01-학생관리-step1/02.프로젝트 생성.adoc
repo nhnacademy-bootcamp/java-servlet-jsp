@@ -1,0 +1,47 @@
+= Project 생성
+
+* https://nhnacademy.dooray.com/share/pages/0Cyc2JLUQtuFUwGTpR2zbw/3445070575802592067
+* java version :  11
+* com.nhnacademy.student
+** group : com.nhnacademy
+** Artifact : student
+
+== pom.xml
+
+[source,xml]
+----
+<dependencies>
+   <dependency>
+       <groupId>jakarta.servlet</groupId>
+       <artifactId>jakarta.servlet-api</artifactId>
+       <version>4.0.4</version>
+       <scope>provided</scope>
+   </dependency>
+
+   <dependency>
+       <groupId>org.glassfish.web</groupId>
+       <artifactId>jakarta.servlet.jsp.jstl</artifactId>
+       <version>1.2.6</version>
+       <scope>runtime</scope>
+   </dependency>
+
+   <dependency>
+       <groupId>org.apache.commons</groupId>
+       <artifactId>commons-math3</artifactId>
+       <version>3.6.1</version>
+   </dependency>
+
+   <dependency>
+       <groupId>org.projectlombok</groupId>
+       <artifactId>lombok</artifactId>
+       <version>1.18.24</version>
+   </dependency>
+
+   <dependency>
+       <groupId>ch.qos.logback</groupId>
+       <artifactId>logback-classic</artifactId>
+       <version>1.2.11</version>
+   </dependency>
+
+</dependencies>
+----

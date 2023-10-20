@@ -1,0 +1,45 @@
+= CharacterEncodingFilter
+
+* 모든 요청의 character set을 설정하는 기능
+
+== web.xml
+
+[source,xml]
+----
+<filter>
+    <filter-name>characterEncodingFilter</filter-name>
+    <filter-class>com.nhnacademy.hello.filter.CharacterEncodingFilter</filter-class>
+    <init-param>
+        <param-name>encoding</param-name>
+        <param-value>UTF-8</param-value>
+    </init-param>
+</filter>
+
+<filter-mapping>
+    <filter-name>characterEncodingFilter</filter-name>
+    <url-pattern>/*</url-pattern>
+</filter-mapping>
+
+----
+
+== CharacterEncodingFilter.java
+
+[source,java]
+----
+public class CharacterEncodingFilter implements Filter {
+    private String encoding;
+
+    @Override
+    public void init(FilterConfig filterConfig) throws ServletException {
+        this.encoding = filterConfig.getInitParameter("encoding");
+    }
+
+    @Override
+    public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
+        servletRequest.setCharacterEncoding(this.encoding);
+        filterChain.doFilter(servletRequest, servletResponse);
+    }
+}
+----
+
+== filterChain.doFilter(servletRequest, servletResponse)를 호출하지 않으면?

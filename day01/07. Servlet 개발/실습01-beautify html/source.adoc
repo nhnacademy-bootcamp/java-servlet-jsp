@@ -1,0 +1,62 @@
+= Source
+
+== beautify.html
+
+[source,html]
+----
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>정리되지 않은 Html 내용을 입력받아 beautify 해서 응답</title>
+</head>
+<body>
+    <form method="post" action="beautify" >
+        <textarea name="html" rows="10" cols="200"></textarea>
+        <p>
+            <button type="submit">전송</button>
+        </p>
+    </form>
+</body>
+</html>
+
+----
+
+== BeautifyServlet
+
+[source,java]
+----
+public class BeautifyServlet extends HttpServlet {
+    private static final Logger log = Logger.getLogger(BeautifyServlet.class.getName());
+
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        req.setCharacterEncoding("utf-8");
+        String html = req.getParameter("html");
+        resp.setContentType("text/plain");
+        resp.setCharacterEncoding("utf-8");
+
+        try(PrintWriter out = resp.getWriter()){
+            out.println(Jsoup.parse(html));
+        }catch (Exception ex){
+            log.info(ex.getMessage());
+        }
+    }
+}
+
+----
+
+== web.xml
+
+[source,xml]
+----
+<servlet>
+    <servlet-name>beautifyServlet</servlet-name>
+    <servlet-class>com.nhnacademy.hello.BeautifyServlet</servlet-class>
+    <load-on-startup>3</load-on-startup>
+</servlet>
+
+<servlet-mapping>
+    <servlet-name>beautifyServlet</servlet-name>
+    <url-pattern>/beautify</url-pattern>
+</servlet-mapping>
+----

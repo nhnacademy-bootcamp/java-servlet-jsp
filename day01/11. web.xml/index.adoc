@@ -1,0 +1,58 @@
+= web.xml
+
+== 배치 기술서 (Deployment Descriptor: DD)
+
+* 웹 애플리케이션의 배치 정보를 담고 있는 XML 파일
+* `/WEB-INF/` 디렉터리 하위에 위치
+* `<web-app>` 이라는 하나의 태그 하위로 설정을 기술
+[source,xml]
+----
+web.xml은 Java 웹 애플리케이션에서 사용되는 배치 서술자(descriptor) 파일 중 하나입니다. 
+이 파일은 웹 애플리케이션의 구성과 설정 정보를 정의하는 데 사용됩니다.
+
+ - 웹 애플리케이션의 구성 요소: 서블릿, 필터, 리스너 등과 같은 구성 요소를 정의할 수 있습니다.
+ - 서블릿 매핑: 웹 애플리케이션에서 URL과 서블릿 클래스 사이의 매핑을 정의할 수 있습니다.
+ - 필터 설정: HTTP 요청 및 응답을 변경하거나 필터링하는 데 사용되는 필터를 정의할 수 있습니다.
+ - 보안 설정: 웹 애플리케이션에 대한 보안 설정을 정의할 수 있습니다.
+ - 초기화 매개변수: 웹 애플리케이션에 대한 초기화 매개변수를 정의할 수 있습니다.
+----
+
+=== Web.xml 파일 내 &lt;web-app&gt; 하위 태그들
+
+==== *Servlet: Servlet 등록 정보*
+
+* servlet-name: Servlet 이름
+* servlet-class: Servlet class의 FQCN
+* init-param: Servlet의 초기 파라미터
+* param-name
+* param-value
+* load-on-startup: 웹 애플리케이션 구동 시 로딩 여부
+
+==== *servlet-mapping : Servlet과 URL 맵핑 정보*
+
+* servlet-name
+* url-pattern: 와일드카드 * 사용 가능, *. 는 확장자로 매칭
+* /foo/bar/*
+* *.jsp
+
+==== *context-param : ServletContext의 초기 파라미터*
+
+* param-name
+* param-value
+
+==== *welcome-file-list : welcome file 리스트*
+
+* welcome-file : index.html 같은 파일… -&gt; 기본페이지
+
+==== *error-page*
+
+* 둘 중 하나 선택
+* error-code : 404, 500 같은 http status code
+* exception-type: Java 예외 class FQCN
+* location: 예외 처리할 UR, /로 시작해야 함
+
+==== *filter : Servlet Filter 등록 정보*
+
+==== *filter-mapping : Servlet Filter와 URL 맵핑 정보*
+
+==== *listener : Listener 등록 정보*

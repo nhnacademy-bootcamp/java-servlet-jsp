@@ -1,0 +1,30 @@
+= html beautify JavaBeans 버전
+
+== jsoup 라이브러리 사용
+
+[source,xml]
+----
+<dependency>
+    <groupId>org.jsoup</groupId>
+    <artifactId>jsoup</artifactId>
+    <version>1.15.3</version>
+</dependency>
+----
+
+== HtmlBeautifier 클래스 - JavaBeans
+
+* html 프로퍼티
+** setter: beautify하려는 html 원문을 설정
+** getter: beautify된 html을 반환
+
+== form.html
+
+* 기존 과제 내용을 그대로 사용
+* action만 html.jsp로 변경
+
+== html.jsp
+
+* html 파라미터 : beautify하려는 html 원문
+** *HtmlBeautifier* bean의 html 프로퍼티로 연결
+* 최대한 scriptlet 없이 **<jsp:useBean>**, **<jsp:setProperty>**, **<jsp:getProperty>** 태그만 이용해 작성
+* **contentType**은 **text/plain**을 사용할 것

@@ -1,0 +1,35 @@
+= 목차
+
+* RequestDispatcher
+* Servlet Filter
+** CharacterEncodingFilter
+** Filter를 이용한 로그인 여부 처리
+* Listener
+** 방문자 카운터 재구현
+** Session 통계
+* form
+** Base64 인코딩
+** 실습 - http://httpbin.org[httpbin.org]
+** 실습 - File Upload
+** 실습 - File Download
+* Servlet 3.0 Annotations
+** 실습- web.xml 설정을 모두 annotation기반으로
+* JSP
+** 실습 - jsp 프로젝트 생성
+** 기본문법
+** JSP - 동작구조
+** 내장객체
+** Action Tag
+* JSP EL(Expression Language)
+* JSTL
+** 예제 - list출력
+** 예제 - custom tag
+
+== 과제
+
+* Nhnmart Servlet version : Servlet / JSP 분리
+
+== 실습
+* link:resources/day02-1-xml.zip[day02-1-xml.zip]
+* link:resources/day02-2-annotation.zip[day02-2-annotation.zip]
+* link:resources/day02-3-jsp.zip[day02-3-jsp.zip]

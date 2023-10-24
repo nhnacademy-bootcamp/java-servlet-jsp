@@ -1,0 +1,87 @@
+= Reflection
+
+== Reflection 이란?
+* Reflection은 java 프로그래밍 언어의  기능이며, 실행 중인 JAVA 프로그램이 자체적으로 검사하거나 프로그램 내부 속성을 조작할 수 있습니다.
+* 자체적으로  생성된 객체의 class type을 알지 못하더라도 해당 class의 메소드, 타입, 변수들에 접근할 수 있도록 해주는 JAVA API 입니다.
+
+== 예제
+* ArrayList.class의 method 리스트를 출력하는 예제
+
+[source,java]
+----
+public static void main(String[] args) {
+    Class c = ArrayList.class;
+    Method m[] = c.getDeclaredMethods();
+    for(int i=0; i<m.length; i++){
+        System.out.println(m[i].toString());
+    }
+}
+----
+
+* 위에 작성한 코드처럼 다른 클래스에 대한 상세한 사항을 알아낼수 있게 하는 것이 reflection의 기능입니다.
+* reflection을 통해 java 프로그램 내에서 클래스를 읽고, 변수, 메서드, 생성자를 알아내어 작업(실행) 할 수 있습니다.
+
+=== 실행결과
+[console,sh]
+----
+ava.lang.Object java.util.ArrayList.elementData(int)
+private java.lang.Object[] java.util.ArrayList.grow()
+private java.lang.Object[] java.util.ArrayList.grow(int)
+int java.util.ArrayList.indexOfRange(java.lang.Object,int,int)
+int java.util.ArrayList.lastIndexOfRange(java.lang.Object,int,int)
+static java.lang.Object java.util.ArrayList.elementAt(java.lang.Object[],int)
+boolean java.util.ArrayList.equalsRange(java.util.List,int,int)
+private boolean java.util.ArrayList.equalsArrayList(java.util.ArrayList)
+private void java.util.ArrayList.checkForComodification(int)
+int java.util.ArrayList.hashCodeRange(int,int)
+private void java.util.ArrayList.fastRemove(java.lang.Object[],int)
+private void java.util.ArrayList.shiftTailOverGap(java.lang.Object[],int,int)
+boolean java.util.ArrayList.batchRemove(java.util.Collection,boolean,int,int)
+private static long[] java.util.ArrayList.nBits(int)
+private static void java.util.ArrayList.setBit(long[],int)
+private static boolean java.util.ArrayList.isClear(long[],int)
+private void java.util.ArrayList.replaceAllRange(java.util.function.UnaryOperator,int,int)
+void java.util.ArrayList.checkInvariants()
+public boolean java.util.ArrayList.add(java.lang.Object)
+public void java.util.ArrayList.add(int,java.lang.Object)
+private void java.util.ArrayList.add(java.lang.Object,java.lang.Object[],int)
+public boolean java.util.ArrayList.remove(java.lang.Object)
+public java.lang.Object java.util.ArrayList.remove(int)
+public java.lang.Object java.util.ArrayList.get(int)
+public boolean java.util.ArrayList.equals(java.lang.Object)
+public int java.util.ArrayList.hashCode()
+public java.lang.Object java.util.ArrayList.clone()
+public int java.util.ArrayList.indexOf(java.lang.Object)
+public void java.util.ArrayList.clear()
+public boolean java.util.ArrayList.isEmpty()
+public int java.util.ArrayList.lastIndexOf(java.lang.Object)
+public boolean java.util.ArrayList.contains(java.lang.Object)
+public void java.util.ArrayList.replaceAll(java.util.function.UnaryOperator)
+public int java.util.ArrayList.size()
+public java.util.List java.util.ArrayList.subList(int,int)
+public java.lang.Object[] java.util.ArrayList.toArray(java.lang.Object[])
+public java.lang.Object[] java.util.ArrayList.toArray()
+public java.util.Iterator java.util.ArrayList.iterator()
+public java.util.Spliterator java.util.ArrayList.spliterator()
+public boolean java.util.ArrayList.addAll(java.util.Collection)
+public boolean java.util.ArrayList.addAll(int,java.util.Collection)
+public java.lang.Object java.util.ArrayList.set(int,java.lang.Object)
+private void java.util.ArrayList.readObject(java.io.ObjectInputStream) throws java.io.IOException,java.lang.ClassNotFoundException
+private void java.util.ArrayList.writeObject(java.io.ObjectOutputStream) throws java.io.IOException
+public void java.util.ArrayList.forEach(java.util.function.Consumer)
+private int java.util.ArrayList.newCapacity(int)
+public void java.util.ArrayList.ensureCapacity(int)
+public void java.util.ArrayList.trimToSize()
+private static int java.util.ArrayList.hugeCapacity(int)
+public boolean java.util.ArrayList.retainAll(java.util.Collection)
+public boolean java.util.ArrayList.removeAll(java.util.Collection)
+public boolean java.util.ArrayList.removeIf(java.util.function.Predicate)
+boolean java.util.ArrayList.removeIf(java.util.function.Predicate,int,int)
+public void java.util.ArrayList.sort(java.util.Comparator)
+public java.util.ListIterator java.util.ArrayList.listIterator()
+public java.util.ListIterator java.util.ArrayList.listIterator(int)
+protected void java.util.ArrayList.removeRange(int,int)
+private void java.util.ArrayList.rangeCheckForAdd(int)
+private static java.lang.String java.util.ArrayList.outOfBoundsMsg(int,int)
+private java.lang.String java.util.ArrayList.outOfBoundsMsg(int)
+----

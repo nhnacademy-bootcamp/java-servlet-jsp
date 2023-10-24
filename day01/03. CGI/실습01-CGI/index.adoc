@@ -1,0 +1,162 @@
+= Java CGI 실습
+
+== Maven Project 생성
+
+* java 11기반 maven project를 생성합니다.
+* 또는 link:resources/cgi.zip[cgi.zip] 에서 소스코드를 받을 수 있습니다.
+
+[source,xml]
+----
+ <dependencies>
+        <dependency>
+            <groupId>com.beust</groupId>
+            <artifactId>jcommander</artifactId>
+            <version>1.82</version>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-shade-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
+                        <configuration>
+                            <finalName>cgi-shade</finalName>
+                            <shadedArtifactAttached>true</shadedArtifactAttached>
+                            <transformers>
+                                <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                                    <mainClass>com.nhnacademy.Main</mainClass>
+                                </transformer>
+                            </transformers>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+----
+
+== CgiArgs.java
+
+[source, java]
+----
+public class CgiArgs {
+
+    @Parameter(names = {"-content-type"})
+    private String contentType;
+
+    @Parameter(names = {"-method","method"})
+    private String method;
+
+    @Parameter(names ={"-query-string"} )
+    private String queryString;
+
+    @Parameter(names = {"-server-name"})
+    private String serverName;
+
+    @Parameter(names = {"-server-port"})
+    private String port;
+
+    @Parameter(names = {"-path"})
+    private String path;
+
+    @Parameter(names = {"-body"})
+    private String body;
+
+    public String getContentType() {
+        return contentType;
+    }
+
+    public String getMethod() {
+        return method;
+    }
+
+    public String getQueryString() {
+        return queryString;
+    }
+
+    public String getServerName() {
+        return serverName;
+    }
+
+    public String getPort() {
+        return port;
+    }
+
+    public String getPath() {
+        return path;
+    }
+
+    public String getBody() {
+        return body;
+    }
+
+}
+----
+
+== Main.java
+
+[source, java]
+----
+public class Main {
+    public static void main(String[] args) {
+        CgiArgs cgiArgs = new CgiArgs();
+
+        JCommander.newBuilder()
+                .addObject(cgiArgs)
+                .build()
+                .parse(args);
+
+        System.out.println("content-type:" + cgiArgs.getContentType());
+        System.out.println("method:" + cgiArgs.getMethod());
+        System.out.println("query-string:" + cgiArgs.getQueryString());
+        System.out.println("server-name:" + cgiArgs.getServerName());
+        System.out.println("server-port:" + cgiArgs.getPort());
+        System.out.println("path:" + cgiArgs.getPath());
+        System.out.println("body:" + cgiArgs.getBody());
+        
+    }
+
+}
+----
+
+== java.cgi.sh
+
+[source,sh]
+----
+java -jar ../../target/cgi-shade.jar  \
+     -content-type text/html \
+     -method get \
+     -query-string '?page=2&id=marco' \
+     -server-name my-server \
+     -server-port 8080 \
+     -path /index.html \
+     -body hello
+----
+
+== run
+* mvn clean package
+* java.cgi.sh을 실행합니다.
+
+== console
+
+[console,sh]
+----
+content-type:text/html
+method:get
+query-string:?page=2&id=marco
+server-name:my-server
+server-port:8080
+path:/index.html
+body:hello
+----
+
+== Reference
+* https://jcommander.org[JCommander]
+* https://www.infoworld.com/article/2076863/write-cgi-programs-in-java.html[infoword.com, Write CGI programs in Java]
+

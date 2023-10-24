@@ -1,0 +1,118 @@
+= Controller Factory
+
+* Controller class를 관리하는 ControllerFactory 만들기
+
+
+== resolveCommand(String servletPath, String method)
+
+=== 문제점
+* Request Mapping이 추가  -> path에 실행햘 command 맵핑.
+* 요청될 때마다 Command 객체를 생성 합니다. ( 비효율 )
+
+[source,java]
+----
+private Command resolveCommand(String servletPath, String method){
+   Command command = null;
+    if("/student/list.do".equals(servletPath) && "GET".equalsIgnoreCase(method) ){
+      command = new StudentListController();
+    }else if("/student/view.do".equals(servletPath) && "GET".equalsIgnoreCase(method) ){
+        command = new StudentViewController();
+    }else if("/student/delete.do".equals(servletPath) && "POST".equalsIgnoreCase(method) ){
+        command = new StudentDeleteController();
+    }else if("/student/update.do".equals(servletPath) && "GET".equalsIgnoreCase(method) ){
+        command = new StudentUpdateFormController();
+    }else if("/student/update.do".equals(servletPath) && "POST".equalsIgnoreCase(method) ){
+        command = new StudentUpdateController();
+    }else if("/student/register.do".equals(servletPath) && "GET".equalsIgnoreCase(method) ){
+        command = new StudentRegisterFormController();
+    }else if("/student/register.do".equals(servletPath) && "POST".equalsIgnoreCase(method) ){
+        command = new StudentRegisterController();
+    }else if("/error.do".equals(servletPath)){
+        command = new ErrorController();
+    }
+    return command;
+}
+----
+
+=== 개선
+* RequestMapping.java
+** 다음과 같은 형태로 Command 객체에 @RequestMapping annotation을 선언 합니다.
+
+
+[source,java]
+----
+@RequestMapping(value = "/student/delete.do", method = RequestMapping.Method.POST)
+public class StudentDeleteController implements Command {
+    //...
+}
+----
+
+* WebAppInitializer.java
+
+** Application의 시작 시점에 Command.class를 구현한 Controller.class를 onStartup Set<Class<?>> 타입으로 주입 됩니다.
+** ControllerFactory에서는 Controller class 객체를 생성하고 Map<String,Object> 저장 합니다.
+
+[source,java]
+----
+public class ControllerFactory  {
+    private final ConcurrentMap<String, Object> beanMap = new ConcurrentHashMap<>();
+
+    public void init(Set<Class<?>> c){
+        //todo beanMap에 key = method + servletPath, value = Controller instance를 저장합니다.
+    }
+
+    public Object getBean(String method, String path){
+        //todo beanMap 에서 method+servletPath을 key로 이용하여 Controller instance를 구합니다.
+        return null;
+    }
+
+}
+----
+
+* ControllerFactory는 ServletContext (Application Context)에 등록합니다.
+
+[source,java]
+----
+@Slf4j
+@HandlesTypes(
+        value = {
+                com.nhnacademy.student.Controller.Command.class
+        }
+)
+public class WebAppInitializer implements ServletContainerInitializer {
+    @Override
+    public void onStartup(Set<Class<?>> c, ServletContext ctx) throws ServletException {
+
+        ControllerFactory controllerFactory = new ControllerFactory();
+        controllerFactory.init(c);
+        ctx.setAttribute("controllerFactory", controllerFactory);
+
+    }
+
+}
+----
+
+
+[source, java]
+----
+@Target(value = {ElementType.TYPE})
+@Retention(RetentionPolicy.RUNTIME)
+public @interface RequestMapping {
+    enum Method{
+        POST,GET
+    }
+    String value();
+    Method method() default Method.GET;
+}
+----
+
+* FrontServlet.java
+** FrontServlet에서는 method(GET | POST) + servletPath를 이용하여 이미 생성된 command 객체를 조회 후 execute(req,resp)실행 합니다.
+
+[source,java]
+----
+Command command = (Command) controllerFactory.getBean(req.getMethod(), req.getServletPath());
+String view = command.execute(req,resp);
+----
+
+

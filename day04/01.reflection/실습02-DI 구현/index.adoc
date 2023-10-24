@@ -1,0 +1,114 @@
+= 리플랙션 API를 이용한 의존성 주입(DI)
+
+* 의존성을 주입해주기 위한 @Autowired annotation을 인터페이스를 이용해서 생성합니다.
+
+== Autowired.java
+
+[source,java]
+----
+@Retention(RetentionPolicy.RUNTIME)
+public @interface Autowired {
+}
+----
+
+=== UserRepository.java
+
+* UserRepository class 는 users 라는 ArrayList type 의 Collection 에 user 를 등록하고 조회하는 역할을 합니다.
+* 저장 : void save(User user) user 객체를 파라미터로 전달받아 arrayList 에 등록합니다.
+* 조회: User findByName(String username) 파라미터로 userName 을 전달받고 users 리스트에서 해당 이름이 일치하면 user 객체를 반환합니다.
+
+[source,java]
+----
+public class UserRepository {
+    private List<User> users = new ArrayList<>();
+    public User findByName(String userName){
+    	return users.stream()
+        	.filter(o->o.getUserName().equals(userName)).findFirst().orElse(null);
+    }
+
+    public void save(User user){
+   		this.users.add(user);
+    }
+}
+----
+
+=== UserService.java
+
+* UserService 는 UserRepository 를 주입받고 UserRepository 로부터 user 를 조회하고 추가하는 method 를 제공합니다
+
+[source,java]
+----
+public class UserService {
+
+ @Autowired
+ private UserRepository userRepository;
+
+ public User getUser(String userName){
+ 	return userRepository.findByName(userName);
+ }
+ public void addUser(User user){
+	 userRepository.save(user);
+ }
+----
+
+=== InjectUtil
+
+* UserService 에 UserRepository 를 자동으로 주입해주는 static util class 입니다.
+* UserService 를 Reflection API 를 이용해서 모든 fields 를 조회해서 field[] 배열로 반환합니다.
+* 반환된 field[] 배열을 이용해서 순회하면서 Autowired.class 즉 @Autowired annotation 이 있는 field 를 조회합니다. 해당 field 는 createInstance() method 에 의해서 객체를 생성합니다.
+* 즉 객체의 생성이 프로그램에 의해서 컨트롤 되었습니다. 객체 간의 의존성을 프로그래머가 직접 제어하기 보다는 InjectUtil 에 의해서 제어되었습니다.
+
+[source,java]
+----
+public final class InjectUtil {
+
+    public static <T> T getObject(Class<T> classType){
+        T instance = createInstance(classType);
+        Field[] fields = classType.getDeclaredFields();
+    for(Field field : fields){
+        if (field.getAnnotation(Autowired.class) != null) {
+            Object fieldInstance = createInstance(field.getType());
+            field.setAccessible(true);
+            try {
+                field.set(instance, fieldInstance);
+            } catch (IllegalAccessException e) {
+                throw new RuntimeException(e);
+            }
+        }
+    }
+    return instance;
+}
+
+private static <T> T createInstance(Class<T> classType) {
+    try {
+        return classType.getConstructor(null).newInstance();
+    } catch (InstantiationException e) {
+        e.printStackTrace();
+    } catch (IllegalAccessException e) {
+        e.printStackTrace();
+    } catch (InvocationTargetException e) {
+        e.printStackTrace();
+    } catch (NoSuchMethodException e) {
+        e.printStackTrace();
+    }
+    return null;
+}
+----
+
+=== DiTest.java
+
+* userService.addUser(user) 메소드를 이용해서 user 를 추가합니다.
+* 해당 user 는 UserRepository 의 users list 에 저장됩니다.
+* userService.getUser(“marco1”)메서드를 호출해서 방금 저장한 ‘marco1’ user 객체를 조회합니다.
+
+[source,java]
+----
+public class DiTest {
+     public static void main(String[] args) {
+         UserService userService = InjectUtil.getObject(UserService.class);
+         User user = new User("marco1",10);
+         userService.addUser(user);
+         System.out.println(userService.getUser("marco1"));
+     }
+ }
+----

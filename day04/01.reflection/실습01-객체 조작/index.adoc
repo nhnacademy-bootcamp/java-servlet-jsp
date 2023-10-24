@@ -1,0 +1,184 @@
+= 객체 조작
+
+== 리플렉션을 이용한 클레스 생성
+
+=== 기본 생성자를 이용한 객체생성
+
+* User.java
+
+[source,java]
+----
+public class User{
+    private String userName;
+    private int userAge;
+    public User(){
+    }
+    public User(String userName, int userAge) {
+        this.userName = userName;
+        this.userAge = userAge;
+    }
+    public String getUserName() {
+   		return userName;
+    }
+    public int getUserAge() {
+   		return userAge;
+    }
+    public void setUserName(String userName) {
+    	this.userName = userName;
+    }
+    public void setUserAge(int userAge) {
+    	this.userAge = userAge;
+    }
+    @Override
+    public String toString() {
+    	return "User{" +
+    	"userName='" + userName + '\'' +
+    	", userAge=" + userAge +
+    	'}';
+    }
+}
+
+----
+
+* 일반적인 객체 생성
+
+[source,java]
+----
+User user = new User("marco",30);
+----
+
+* 리플랙션을 이용한 객체생성
+
+[source,java]
+----
+public static void main(String[] args) {
+    try {
+        Class userClass = Class.forName(User.class.getName());
+        Constructor<?> constructor = userClass.getConstructor();
+        User user = (User) constructor.newInstance();
+        System.out.println(user);
+    } catch (ClassNotFoundException | NoSuchMethodException e){
+        e.printStackTrace();
+    } catch (InvocationTargetException e) {
+        e.printStackTrace();
+    } catch (InstantiationException e) {
+        e.printStackTrace();
+    } catch (IllegalAccessException e) {
+        e.printStackTrace();
+    }
+}
+----
+
+* Class.forName(className)
+** 물리적인 클래스 파일명을 인자로 넘겨주면 이에 해당하는 클래스를 반환합니다.
+* Clazz.getConstructor()
+** public 접근자를 가진 생성자를 반환합니다.
+
+=== Arguments 전달되는 객체를 생성하는 예제
+
+* getConstructor(String.class ,Integer.TYPE) 생성자 형태를 지정합니다.
+* new User("marco",20)  실행하는 예제
+
+[source,java]
+----
+public static void main(String[] args) {
+    try {
+        Constructor cUser =
+        Class.forName(User.class.getName()).getConstructor(String.class ,Integer.TYPE);
+        User user = (User) cUser.newInstance("marco",20);
+        System.out.println(user);
+    } catch (ClassNotFoundException e) {
+   		e.printStackTrace();
+    } catch (InvocationTargetException e) {
+    	e.printStackTrace();
+    } catch (NoSuchMethodException e) {
+    	e.printStackTrace();
+    } catch (InstantiationException e) {
+    	e.printStackTrace();
+    } catch (IllegalAccessException e) {
+    	e.printStackTrace();
+    }
+}
+----
+
+== 리플랙션을 이용한 메소드 호출
+
+* 일반적인 메소드 호출
+[source,java]
+----
+uer.getUserName();
+user.getUserAge();
+----
+
+* 리플랙션 api를 이용한 메소드 호출
+** User객체를 생성 후 getDeclaredMethod를 이용해서 name,age의 setter, getter method를 실행하는 예제 입니다.
+
+[source,java]
+----
+public static void main(String[] args) {
+    try {
+        Class clazz = Class.forName(User.class.getName());
+        Object user = clazz.getDeclaredConstructor().newInstance();
+        Method setUserNameMethod =clazz.getDeclaredMethod("setUserName",String.class);
+        setUserNameMethod.invoke(user, "NHN 아카데미");
+        Method getUserNameMethod =clazz.getDeclaredMethod("getUserName");
+        String userName = (String)
+        getUserNameMethod.invoke(user);
+        Method setUserAgeMethod =clazz.getDeclaredMethod("setUserAge",Integer.TYPE);
+        setUserAgeMethod.invoke(user, 30);
+        Method getUserAgeMethod =clazz.getDeclaredMethod("getUserAge");
+        int userAge = (int) getUserAgeMethod.invoke(user);
+        System.out.println("userName:" + userName);
+        System.out.println("userAge:" + userAge);
+    } catch (ClassNotFoundException e) {
+   		e.printStackTrace();
+    } catch (InvocationTargetException e) {
+    	e.printStackTrace();
+    } catch (InstantiationException e) {
+    	e.printStackTrace();
+    } catch (IllegalAccessException e) {
+    	e.printStackTrace();
+    } catch (NoSuchMethodException e) {
+    	e.printStackTrace();
+    }
+}
+----
+
+== 리플렉션 Api를 이용한 필드 접근
+
+* public field, private field를 리플랙션 api를 이용해서 접근할 수 있습니다.
+* User 의 맴버변수인 userName, userAge 에 Reflection API 를 이용해서 접근합니다. userNameField, UserAgeField 를 이용해서 ‘marco’, 30 할당합니다.
+* 해당 field 의 get() method 이용해서 할당된 값을 출력합니다.
+* username, userAge 는 private 범위의 맴버변수 입니다. <b><span style="color:#e11d21;">하지만 Field.setAccessible(true)를 설정함으로써 private 맴버 변수도 접근할 수 있습니다.</span></b>
+
+[source,java]
+----
+public static void main(String[] args) {
+    try {
+        Class clazz = Class.forName(User.class.getName());
+        Object user =clazz.getDeclaredConstructor().newInstance();
+        Field userNameField =clazz.getDeclaredField("userName");
+        userNameField.setAccessible(true);
+        userNameField.set(user, "marco");
+        String userName = (String) userNameField.get(user);
+        Field userAgeField =clazz.getDeclaredField("userAge");
+        userAgeField.setAccessible(true);
+        userAgeField.set(user, 30);
+        int userAge = userAgeField.getInt(user);
+        System.out.println("userName:" + userName);
+        System.out.println("userAge:" + userAge);
+    } catch (NoSuchFieldException e) {
+        e.printStackTrace();
+    } catch (ClassNotFoundException e) {
+        e.printStackTrace();
+    } catch (InvocationTargetException e) {
+        e.printStackTrace();
+    } catch (InstantiationException e) {
+        e.printStackTrace();
+    } catch (IllegalAccessException e) {
+        e.printStackTrace();
+    } catch (NoSuchMethodException e) {
+        e.printStackTrace();
+    }
+}
+----

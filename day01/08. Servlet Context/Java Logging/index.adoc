@@ -61,7 +61,7 @@ private static final Logger log = org.slf4j.LoggerFactory.getLogger(RequestServl
 
 image:https://www.slf4j.org/images/concrete-bindings.png[]
 
-== Refference
+== Reference
 
 * https://ko.wikipedia.org/wiki/%ED%8D%BC%EC%82%AC%EB%93%9C_%ED%8C%A8%ED%84%B4[위키-파사드]
 * https://www.slf4j.org/manual.html[slf4j]

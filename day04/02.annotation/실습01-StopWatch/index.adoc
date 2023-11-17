@@ -87,10 +87,10 @@ public class ArrayListTestMain {
 [source,java]
 ----
 public class ArrayListTestProxy implements PerformanceTestable {
-    private final ArrayListTest arrayListTest;
+    private final PerformanceTestable performanceTestable;
 
-    public ArrayListTestProxy() {
-        this.arrayListTest = new ArrayListTest();
+    public ArrayListTestProxy(PerformanceTestable performanceTestable) {
+        this.performanceTestable = performanceTestable;
     }
 
     @Override
@@ -98,7 +98,7 @@ public class ArrayListTestProxy implements PerformanceTestable {
         if(hasStopWatch()) {
             long start = System.currentTimeMillis();
             System.out.println("##시간측정 시작: " + start );
-            arrayListTest.test();
+            performanceTestable.test();
             long end = System.currentTimeMillis();
             System.out.println("##시간측정 종료:" + end);
             long result = (end - start)/1000;
@@ -107,7 +107,7 @@ public class ArrayListTestProxy implements PerformanceTestable {
     }
 
     private boolean hasStopWatch(){
-        for(Method method : arrayListTest.getClass().getDeclaredMethods()){
+        for(Method method : performanceTestable.getClass().getDeclaredMethods()){
             StopWatch stopWatch = method.getAnnotation(StopWatch.class);
             if(Objects.nonNull(stopWatch)){
                 return true;

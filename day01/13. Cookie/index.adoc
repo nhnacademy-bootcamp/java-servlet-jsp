@@ -56,7 +56,7 @@ public static Cookie getCookie(HttpServletRequest req, String name) {
 
 ----
 
-* *<span style="color:#e11d21">CookieUtils.java 생성</span>*
+* *CookieUtils.java 생성*
 [source,java]
 ----
 public final class CookieUtils {

@@ -48,7 +48,7 @@ image:./images/image-2.png[@jakartaee]
 
 |Jakarta EE 10 |2022-03 |*Jakarta EE 최초의 major release* 
 |Jakarta EE 9.1 |2021-05 |JDK 11 지원 
-|Jakarta EE 9 |2020-12 |<span style="color:red">네임스페이스 변경: `javax` → `jakarta`</span> 
+|Jakarta EE 9 |2020-12 |네임스페이스 변경: `javax` → `jakarta`
 |Jakarta EE 8 |2019-09 |Java EE → Jakarta EE로 복사 
 |Java EE 8 |2017-08 |HTTP/2 
 |Java EE 7 |2013-05 |WebSocket, JSON, HTML5 지원 

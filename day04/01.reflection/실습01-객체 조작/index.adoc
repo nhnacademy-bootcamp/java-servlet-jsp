@@ -149,7 +149,7 @@ public static void main(String[] args) {
 * public field, private field를 리플랙션 api를 이용해서 접근할 수 있습니다.
 * User 의 맴버변수인 userName, userAge 에 Reflection API 를 이용해서 접근합니다. userNameField, UserAgeField 를 이용해서 ‘marco’, 30 할당합니다.
 * 해당 field 의 get() method 이용해서 할당된 값을 출력합니다.
-* username, userAge 는 private 범위의 맴버변수 입니다. <b><span style="color:#e11d21;">하지만 Field.setAccessible(true)를 설정함으로써 private 맴버 변수도 접근할 수 있습니다.</span></b>
+* username, userAge 는 private 범위의 맴버변수 입니다. ** 하지만 Field.setAccessible(true)를 설정함으로써 private 맴버 변수도 접근할 수 있습니다.**
 
 [source,java]
 ----

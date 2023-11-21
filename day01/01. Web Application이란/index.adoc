@@ -55,7 +55,7 @@ image:https://upload.wikimedia.org/wikipedia/commons/c/c9/Client-server-model.sv
 |===
 | |Client - Server Application |Web Application 
 
-|아키텍쳐 |<span style="color:#e11d21">**2 tire**</span> |<span style="color:#e11d21">**multi tire**</span> 
+|아키텍쳐 |**2 tire** |**multi tire**
 |상호작용 |사용자의 인터페이스 또는 애플리케이션 |웹 브라우저 
 |실행 |애플리케이션 사전 설치 |웹 브라우저에서 직접 실행 
 |쿠키 |none |required 

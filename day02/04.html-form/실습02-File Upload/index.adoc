@@ -139,6 +139,7 @@ public class FileUploadServlet extends HttpServlet {
 
 == log
 
+[console,sh]
 ----
 14:40:55.139 [http-nio-8080-exec-2] ERROR com.nhnacademy.hello.file.FileUploadServlet - userId=marco
 14:40:55.139 [http-nio-8080-exec-2] ERROR com.nhnacademy.hello.file.FileUploadServlet - userPassword=1234

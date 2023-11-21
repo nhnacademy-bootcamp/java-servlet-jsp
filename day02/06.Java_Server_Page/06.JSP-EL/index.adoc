@@ -54,6 +54,7 @@ ${sessionScope.user2.age}
 * 실수 : ${3.14}
 * boolean : ${true}
 * null : ${null}
+
 [source,html]
 ----
 <div>

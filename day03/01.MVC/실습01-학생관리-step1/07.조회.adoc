@@ -1,6 +1,6 @@
 = 학생 - 조회
 
-image:img_1.png[img_1.png]
+image:resources/img_1.png[]
 
 * 등록일 : customTag 참고
 ** https://nhnacademy.dooray.com/share/pages/wNriZC3NRea9fwieaPlqfw/3474173583292731916

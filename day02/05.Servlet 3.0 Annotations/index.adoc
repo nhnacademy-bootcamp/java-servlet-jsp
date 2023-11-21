@@ -31,6 +31,7 @@ public class FileUploadServlet extends HttpServlet {
 ** &lt;servlet&gt;, &lt;servlet-mapping&gt;제거
 ** @WebServlet 추가
 *** @WebInitParam
+
 [source,java]
 ----
 @WebServlet(
@@ -54,6 +55,7 @@ public class LoginServlet extends HttpServlet {
 ** &lt;filter&gt;, &lt;filter-mapping&gt; 제거
 ** CharacterEncodingFilter
 *** WebFilter 추가 (@WebInitParam)
+
 [source,java]
 ----
 @WebFilter(
@@ -74,6 +76,7 @@ public class CharacterEncodingFilter implements Filter {
 ** &lt;listener&gt; 제거
 * ServletContextListener
 ** @WebListener 추가
+
 [source,java]
 ----
 @WebListener

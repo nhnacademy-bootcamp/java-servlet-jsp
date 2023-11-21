@@ -23,7 +23,7 @@ Command 패턴은 GUI 애플리케이션에서는 메뉴나 버튼 등의 요소
 
 ----
 
-image:img.png[img.png]
+image:resources/img.png[]
 
 == 실제 요청을 처리하는 Servlet에 Command 패턴 적용
 
@@ -181,7 +181,7 @@ ____
 * 보안, 국제화, 뷰 제공 등의 공통적인 작업을 수행
 * cf.) Front Controller vs Page Controller
 
-image:img_1.png[img_1.png]
+image:resources/img_1.png[]
 
 https://www.martinfowler.com/eaaCatalog/frontController.html
 
@@ -190,7 +190,7 @@ https://www.martinfowler.com/eaaCatalog/frontController.html
 * Command 구현체가 n개 …
 * resolve의 if에 의한 분기처리
 
-image:img_2.png[img_2.png]
+image:resources/img_2.png[]
 
 === Nhnmart에 적용 예
-image:img_3.png[img_3.png]
+image:resources/img_3.png[]

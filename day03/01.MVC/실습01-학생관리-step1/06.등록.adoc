@@ -1,6 +1,6 @@
 = 학생-등록
 
-image:img.png[img.png]
+image:resources/img.png[]
 
 == StudentRegisterServlet.java
 

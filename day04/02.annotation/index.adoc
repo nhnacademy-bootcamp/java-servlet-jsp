@@ -99,6 +99,7 @@ public class Example01 {
 
 * 대표적으로 @Override Annotation이 있습니다.
 ** Annotation에 설정할 별도의 요소가  없는 경우 Marker annotation이라고 합니다.
+
 [source,java]
 ----
 public class MallardDuck implements Duck {
@@ -134,6 +135,7 @@ public class MallardDuck implements Duck {
 * rawtypes : 제너릭을 사용하는 클래스 매개 변수가 불특정일 때의 경고
 * unchecked : 검증되지 않은 연산자 관련 경고
 * unused : 사용하지 않는 코드 관련 경고
+
 [source,java]
 ----
 public class Example03 {
@@ -175,6 +177,7 @@ public class Example03 {
 * 컴파일러가 확인하기 어려운 까다로운 문제
 * heap pollution 문제..
 ** 공변성 배열 예제를 생각해보기
+
 [source,java]
 ----
 public class Example04 {

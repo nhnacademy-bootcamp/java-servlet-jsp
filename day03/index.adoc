@@ -13,4 +13,4 @@
 
 == 과제
 
-* NHN 마트 - FrontController pattern적용
+* NHN 마트 - FrontController Pattern적용

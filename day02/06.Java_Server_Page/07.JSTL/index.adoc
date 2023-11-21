@@ -5,6 +5,7 @@
 == 의존 라이브러리 추가
 
 * pom.xml
+
 [source,xml]
 ----
 <dependency>
@@ -31,6 +32,7 @@
 == core tag library
 
 * taglib Directive 선언
+
 [source,xml]
 ----
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
@@ -43,6 +45,7 @@
  * 변수 생성, 변수 값 할당
  * JSP 로컬 변수가 아닌 지정한 scope의 저장소에 저장됨
 * &lt;c:remove&gt; : 변수 삭제
+
 [source,xml]
 ----
 <%@ page contentType="text/html;charset=UTF-8" language="java" trimDirectiveWhitespaces="true" %>
@@ -71,6 +74,7 @@
 * &lt;c:if&gt;
 * &lt;c:choose&gt;
 * &lt;c:forEach&gt;
+
 [source,xml]
 ----
 <%@ page contentType="text/html;charset=UTF-8" language="java" trimDirectiveWhitespaces="true" %>
@@ -230,8 +234,7 @@
 * fmt:message
 ** 다국어 메세지 표시
 ** fmt:setBundle 사용 시 bundle 속성에 Resource Bundler 변수를 지정
-*** Bundler 관련 설정 참고 : 1일차 - CooKie - 실습1 - ResourceBundle + Cookie
-**** https://nhnacademy.dooray.com/share/pages/0Cyc2JLUQtuFUwGTpR2zbw/3459559137440816319
+*** Bundler 관련 설정 참고 : link:{docdir}/../../../day01/13.Cookie/실습01-ResourceBundle_Cookie/index.adoc[실습01-ResourceBundle_Cookie]
 ** hello 값 설정하기
 *** message.properties
 **** hello=hello
@@ -239,6 +242,7 @@
 **** hello=hello
 *** message_ko.properties
 **** hello=안녕하세요
+
 [source,xml]
 ----
 <%@ page contentType="text/html;charset=UTF-8" language="java" trimDirectiveWhitespaces="true" %>
@@ -264,6 +268,7 @@
 === fmt : 숫자 포맷팅
 
 * fmt:formatNumber : 숫자, 통화 포맷팅
+
 [source,xml]
 ----
 <%@ page contentType="text/html;charset=UTF-8" language="java" trimDirectiveWhitespaces="true" %>
@@ -291,6 +296,7 @@
 === fmt : 날짜 포맷팅
 
 * : 날짜 포맷팅
+
 [source,xml]
 ----
 <fmt:formatDate value="date"

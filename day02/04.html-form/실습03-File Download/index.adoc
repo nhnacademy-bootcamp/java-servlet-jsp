@@ -14,6 +14,7 @@
 * Content-Disposition header
 ** cf.) https://datatracker.ietf.org/doc/html/rfc6266
 ** 당장은 파일명은 ISO-8859-1 인코딩으로 처리 가능한 경우로만 한정
+
 [source,text]
 ----
 Content-Disposition: attachment; filename=a.jpg

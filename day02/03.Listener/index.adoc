@@ -8,7 +8,7 @@
 |===
 |Event Source |Event |Event Listener | 
 
-|ServletContext |ServletContextEvent |*ServletContextListener* |*<웹 애플리케이션 시작, 종료*
+|ServletContext |ServletContextEvent |*ServletContextListener* |*웹 애플리케이션 시작, 종료*
 |ServletContext |ServletContextAttributeEvent |ServletContextAttributeListener |ServletContext 속성 변경 
 |HttpSession |HttpSessionEvent |*HttpSessionListener* |*세션 시작, 종료*
 |HttpSession |HttpSessionBindingEvent |HttpSessionAttributeListener |세션 속성 변경 

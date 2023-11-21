@@ -49,7 +49,7 @@ public class StudentDeleteController implements Command {
 
 * WebAppInitializer.java
 
-** Application의 시작 시점에 Command.class를 구현한 Controller.class를 onStartup Set<Class<?>> 타입으로 주입 됩니다.
+** Application의 시작 시점에 Command interface를 구현한 Controller class를 onStartup Set<Class<?>> 타입으로 주입 됩니다.
 ** ControllerFactory에서는 Controller class 객체를 생성하고 Map<String,Object> 저장 합니다.
 
 [source,java]

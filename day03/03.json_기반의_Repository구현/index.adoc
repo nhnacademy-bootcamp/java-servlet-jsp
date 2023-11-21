@@ -12,6 +12,7 @@
 * JSR310
 ** https://mvnrepository.com/artifact/com.fasterxml.jackson.datatype/jackson-datatype-jsr310
 ** LocalDateTime 대응하기 위해서 의존성을 추가합니다.
+
 [source,xml]
 ----
 <dependency>
@@ -40,6 +41,7 @@
 === JsonStudentRepository
 
 * json파일 형태로 저장할 수 있도록 구현합니다.
+
 [source,java]
 ----
 public class JsonStudentRepository implements StudentRepository {

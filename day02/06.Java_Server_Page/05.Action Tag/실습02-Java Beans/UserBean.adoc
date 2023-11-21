@@ -86,6 +86,7 @@ image:resources/img-01.png[img.png]
 === value 대신 param 속성 사용하기
 
 * bean.jsp?userName=marco&amp;userAge=38
+
 [source,xml]
 ----
 <jsp:setProperty name="user1" property="name" param="userName" />

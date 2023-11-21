@@ -43,6 +43,7 @@
 * 사용자 조회 화면에서는 이름과 프로필 이미지만 보여준다
 ** 기능적으로 사용자를 구분하기 위해 아이디 사용은 가능
 * 사용자 interface
+
 [source,java]
 ----
 public interface User {
@@ -63,6 +64,7 @@ public interface User {
 
 * 사용자를 등록/수정/삭제/조회 시에 `UserReposity` 사용
 ** `UserReposity` 구현은 메모리 기반 자료 구조 (List, Map 등) 사용
+
 [source,java]
 ----
 public interface UserRepository {
@@ -87,6 +89,7 @@ public interface UserRepository {
 ** 작성 시각 (기본값은 현재 시각)
 ** 조회 수
 * 게시물 interface
+
 [source,java]
 ----
 public interface Post {
@@ -111,6 +114,7 @@ public interface Post {
 ----
 
 * 게시물을 등록/수정/삭제/조회 시에 `PostRepository` 사용
+
 [source,java]
 ----
 public interface PostRepository {
@@ -124,6 +128,7 @@ public interface PostRepository {
 ----
 
 * 게시물 등록 예제
+
 [source,java]
 ----
 Post post = new ConcretePost();
@@ -177,13 +182,17 @@ post.setId(postId);
 === Ex.) JSON 파일
 
 * users.json
+
 [source,javascript]
 ----
-[{"id" : "admin",
-"password" : "12345",
-"name" : "Administrator",
-"profileFileName" : null
-}]
+[
+    {
+        "id":"admin",
+        "password":"12345",
+        "name":"Administrator",
+        "profileFileName":null
+    }
+]
 ----
 
 === JSON 라이브러리

@@ -1,6 +1,6 @@
 = 학생 - 수정
 
-image:img_2.png[img_2.png]
+image:resources/img_2.png[]
 
 * /student/register.jsp를 이용해서 구현합니다.
 

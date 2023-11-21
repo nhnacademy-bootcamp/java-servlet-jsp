@@ -18,6 +18,7 @@
 ** req.setAttribute("view", "redirect:/student/list.jsp");
 * include를 이용해서 servlet 처리와 view를 처리합니다.
 ** forward를 처리하면 해당 servlet으로 이동 -&gt; jsp가 view 역할을 할 수 없습니다.(참고해주세요)
+
 [source,java]
 ----
 @Slf4j

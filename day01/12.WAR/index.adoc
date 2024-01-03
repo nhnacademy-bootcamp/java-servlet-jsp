@@ -4,9 +4,9 @@
 
 * 참고
 
-* tar (Tape Archive) : Uninx / linux archive utility
-* jar ( Java Archive )
-* war ( Web application Archive )
+** tar (Tape Archive) : Uninx / linux archive utility
+** jar ( Java Archive )
+** war ( Web application Archive )
 
 ____
 
@@ -33,7 +33,7 @@ image:./images/image-1.png[image.png]
 
 * `/WEB-INF/*.` <- 디렉터리 하위는 외부 요청에서 직접 참조 불가
 * `/WEB-INF/classes class` <- 파일들 위치
-* `/WEB-INF/LIB` <- 라이브러리 파일들 위치
+* `/WEB-INF/lib` <- 라이브러리 파일들 위치
 * `web.xml`
 ** 배치 기술자 파일
 

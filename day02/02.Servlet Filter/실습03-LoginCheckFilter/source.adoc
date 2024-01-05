@@ -23,6 +23,7 @@ public class LoginCheckFilter implements Filter {
             HttpSession session = ((HttpServletRequest) servletRequest).getSession(false);
             if(Objects.isNull(session)){
                 ((HttpServletResponse) servletResponse).sendRedirect("/login.html");
+                return;
             }
         }
 
@@ -37,7 +38,7 @@ public class LoginCheckFilter implements Filter {
 [source,xml]
 ----
 <filter>
-    <filter-name>lgoinCheckFilter</filter-name>
+    <filter-name>loginCheckFilter</filter-name>
     <filter-class>com.nhnacademy.hello.filter.LoginCheckFilter</filter-class>
     <init-param>
         <param-name>exclude-urls</param-name>

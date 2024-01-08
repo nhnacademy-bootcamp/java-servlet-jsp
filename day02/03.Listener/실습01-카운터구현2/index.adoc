@@ -14,7 +14,7 @@
     ** 웹 애플리케이션 초기화 시 방문수 저장한 파일에서 counter 값을 읽어온다
         *** 경로 : /WEB-INF/classes/counter.dat
         *** file 입출력
-        **** BufferedReader, BufferedWriter 사용합니다.
+        **** BufferedReader,BufferedWriter 사용합니다.
         **** charset = UTF-8
     ** 읽어온 counter 값은 ServletContext 에 속성 값으로 저장
 * *CounterFilter*를 만들어서

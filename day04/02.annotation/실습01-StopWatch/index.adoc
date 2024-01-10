@@ -1,13 +1,13 @@
 = Annotation을 이용한 StopWatch 만들기
 
-* ArrayList의  1 to 100000000 까지  add 하는 예제입니다.
+* ArrayList의 1 to 100000000 까지 add 하는 예제입니다.
 * Collection Framework List 편에서 LinkedList, ArrayList의 성능 이슈에 대한 시간(초) 측정 테스트를 Annotation을 이용해서 구현하는 간단한 예제 입니다.
 
 == 선수학습
 
-* Proxy Pattern 선수 학습하기
+* Proxy Pattern
 * Reflection
-* annotation
+* Annotation
 
 == Proxy pattern을 이용한 단순한 구조
 

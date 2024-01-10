@@ -98,7 +98,7 @@ public class ControllerFactory  {
     }
 
     public Object getBean(String method, String path){
-        //todo beanMap 에서 method+servletPath을 key로 이용하여 Controller instance를 구합니다.
+        //todo beanMap 에서 method+servletPath을 key로 이용하여 Controller instance를 반환합니다.
         return null;
     }
 }

@@ -1,13 +1,13 @@
 = Controller Factory
 
-* Controller class를 관리하는 ControllerFactory 만들기
+* Controller를 관리하는 ControllerFactory 만들기
 
 
 == resolveCommand(String servletPath, String method)
 
 === 문제점
 * Request Mapping이 추가  -> path에 실행햘 command 맵핑.
-* 요청될 때마다 Command 객체를 생성 합니다. ( 비효율 )
+* 요청될 때마다 Command 객체를 생성 합니다.
 
 [source,java]
 ----
@@ -36,8 +36,21 @@ private Command resolveCommand(String servletPath, String method){
 
 === 개선
 * RequestMapping.java
-** 다음과 같은 형태로 Command 객체에 @RequestMapping annotation을 선언 합니다.
 
+[source, java]
+----
+@Target(value = {ElementType.TYPE})
+@Retention(RetentionPolicy.RUNTIME)
+public @interface RequestMapping {
+    enum Method{
+        POST,GET
+    }
+    String value();
+    Method method() default Method.GET;
+}
+----
+
+* 다음과 같은 형태로 Controller에 @RequestMapping annotation을 선언 합니다.
 
 [source,java]
 ----
@@ -51,25 +64,6 @@ public class StudentDeleteController implements Command {
 
 ** Application의 시작 시점에 Command interface를 구현한 Controller class를 onStartup Set<Class<?>> 타입으로 주입 됩니다.
 ** ControllerFactory에서는 Controller class 객체를 생성하고 Map<String,Object> 저장 합니다.
-
-[source,java]
-----
-public class ControllerFactory  {
-    private final ConcurrentMap<String, Object> beanMap = new ConcurrentHashMap<>();
-
-    public void init(Set<Class<?>> c){
-        //todo beanMap에 key = method + servletPath, value = Controller instance를 저장합니다.
-    }
-
-    public Object getBean(String method, String path){
-        //todo beanMap 에서 method+servletPath을 key로 이용하여 Controller instance를 구합니다.
-        return null;
-    }
-
-}
-----
-
-* ControllerFactory는 ServletContext (Application Context)에 등록합니다.
 
 [source,java]
 ----
@@ -92,17 +86,21 @@ public class WebAppInitializer implements ServletContainerInitializer {
 }
 ----
 
+* ControllerFactory는 ServletContext (Application Context)에 등록합니다.
 
-[source, java]
+[source,java]
 ----
-@Target(value = {ElementType.TYPE})
-@Retention(RetentionPolicy.RUNTIME)
-public @interface RequestMapping {
-    enum Method{
-        POST,GET
+public class ControllerFactory  {
+    private final ConcurrentMap<String, Object> beanMap = new ConcurrentHashMap<>();
+
+    public void init(Set<Class<?>> c){
+        //todo beanMap에 key = method + servletPath, value = Controller instance
     }
-    String value();
-    Method method() default Method.GET;
+
+    public Object getBean(String method, String path){
+        //todo beanMap 에서 method+servletPath을 key로 이용하여 Controller instance를 구합니다.
+        return null;
+    }
 }
 ----
 
@@ -114,5 +112,3 @@ public @interface RequestMapping {
 Command command = (Command) controllerFactory.getBean(req.getMethod(), req.getServletPath());
 String view = command.execute(req,resp);
 ----
-
-

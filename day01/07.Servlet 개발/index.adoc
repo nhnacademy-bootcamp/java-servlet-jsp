@@ -203,36 +203,8 @@ image:./images/image-2.png[image.png]
 
 == Servlet 클래스 계층도
 
-[source,plantuml]
-----
-@startuml
-package javax.servlet {
-    Interface Servlet{
-    }
+image:images/image-3.png[]
 
-    abstract class GenericServlet{
-    }
-
-    Servlet <|.. GenericServlet
-
-}
-
-package javax.servlet.http {
-    abstract class HttpServlet{
-
-    }
-    GenericServlet <|--  HttpServlet
-}
-
-package com.nhnacademy.hello {
-	class HelloServlet{}
-    class NowServlet{}
-    HttpServlet <-- HelloServlet
-    HttpServlet <-- NowServlet
-
-}
-@enduml
-----
 
 == GenericServlet 이란?
 

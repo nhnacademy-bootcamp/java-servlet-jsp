@@ -172,11 +172,10 @@ public class FrontServlet extends HttpServlet {
 === doGet(), doPost() 각각을 나눠서 별도의 클래스로 분리한다고 하면
 
 * 각각의 클래스들은
-** FrontServlet과는 RequestDispatcher 에 의해 request가 공유되
-** view JSP 경로만 제공해주면 FrontServlet에서 response에 대한 공통 처리가 이루어지므로
-*** 굳이 Servlet일 필요도 없음
+** FrontServlet과는 RequestDispatcher 에 의해 request 공유
+** view JSP 경로만 제공해주면 FrontServlet에서 response에 대한 공통 처리가 이루어지므로 굳이 Servlet일 필요도 없음
 ** 하나의 공통된 메서드를 가지는 인터페이스
 *** HttpServletRequest, HttpServletResponse 를 인자로 받고
 *** view JSP 경로를 반환
-** 를 구현하는 여러 클래스들로 구현 가능
+** `Command` 를 구현하는 여러 클래스들로 구현 가능
 *** 각각의 클래스에서 실제 요청을 처리

@@ -1,7 +1,6 @@
 = Project 생성
 
-* https://nhnacademy.dooray.com/share/pages/0Cyc2JLUQtuFUwGTpR2zbw/3445070575802592067
-* java version :  11
+* java version : 11
 * com.nhnacademy.student
 ** group : com.nhnacademy
 ** Artifact : student

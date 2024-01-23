@@ -3,7 +3,7 @@
 image:resources/img_1.png[]
 
 * 등록일 : customTag 참고
-** https://nhnacademy.dooray.com/share/pages/wNriZC3NRea9fwieaPlqfw/3474173583292731916
+** link:../../../day02/06.Java_Server_Page/07.JSTL/실습02-custom-tag/index.adoc[CustomTag]
 
 == StudentViewServlet.java
 

@@ -8,7 +8,7 @@ image:resources/img.png[img.png]
 
 * https://tomcat.apache.org/tomcat-9.0-doc/api/org/apache/jasper/runtime/HttpJspBase.html
 * *HttpServlet을 확장한 class*
- image:/wikis/3209546557912400486/files/3469694455871077565[image.png]
+ image:resources/img_1.png[]
 
 == 주요 api
 

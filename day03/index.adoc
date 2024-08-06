@@ -10,7 +10,3 @@
 *** Servlet 에서 Controller 변경
 *** ForntServlet
 * 실습4 - 학생관리 - step4 - JSON-File-DB
-
-== 과제
-
-* NHN 마트 - FrontController Pattern적용

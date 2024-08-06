@@ -13,9 +13,10 @@
 
 == 서블릿은 비지니스 로직을 처리하고 view 속성에 view역할을 할 jsp 경로를 반환
 
-* ex) req.setAttribute("view", "/student/list.jsp");
-* redirect 처리 : redirect:jsp path
-** req.setAttribute("view", "redirect:/student/list.jsp");
+* /student/list servlet 에서는 view를 다음과 같이 설정 합니다.
+** req.setAttribute("view", "/student/list.jsp");
+* redirect - *.do 경로를 사용 합니다.(즉 JSP는 view 역할 담당, 해당 servlet을 실행하지 않고 데이터를 바인딩할 수 없음)
+** req.setAttribute("view", "redirect:/student/list.do");
 * include를 이용해서 servlet 처리와 view를 처리합니다.
 ** forward를 처리하면 해당 servlet으로 이동 -&gt; jsp가 view 역할을 할 수 없습니다.(참고해주세요)
 

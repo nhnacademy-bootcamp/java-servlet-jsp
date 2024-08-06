@@ -36,7 +36,7 @@ public interface Command {
 }
 ----
 
-== 실제 요청을 처리하는 Servlet들
+== 실제 요청을 처리하는 Servlet-1
 
 * 기존 Servlet과 구별하기 위해 `-Servlet` 대신 `-Controller`라는 접미사를 사용
 * Command interface를  구현합니다.
@@ -79,7 +79,7 @@ public class StudentDeleteController implements Command {
 }
 ----
 
-== 실제 요청을 처리하는 Servlet들 (계속)
+== 실제 요청을 처리하는 Servlet-2
 
 === StudentListServlet
 
@@ -191,6 +191,3 @@ https://www.martinfowler.com/eaaCatalog/frontController.html
 * resolve의 if에 의한 분기처리
 
 image:resources/img_2.png[]
-
-=== Nhnmart에 적용 예
-image:resources/img_3.png[]

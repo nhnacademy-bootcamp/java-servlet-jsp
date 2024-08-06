@@ -25,10 +25,6 @@
 ** 예제 - list출력
 ** 예제 - custom tag
 
-== 과제
-
-* Nhnmart Servlet version : Servlet / JSP 분리
-
 == 실습
 * link:resources/day02-1-xml.zip[day02-1-xml.zip]
 * link:resources/day02-2-annotation.zip[day02-2-annotation.zip]

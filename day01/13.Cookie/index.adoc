@@ -9,7 +9,7 @@ ____
 
 ____
 
-== javax.servlet.http.Cookie
+== Jakarta.servlet.http.Cookie
 
 [source,java]
 ----

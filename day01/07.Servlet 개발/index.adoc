@@ -22,6 +22,7 @@ public interface Servlet {
 == Servlet Lifecycle
 
 image:https://docs.oracle.com/cd/E17802_01/products/products/servlet/2.1/orig/introduction.fm.anc.gif[image]
+
 Servlet Lifecycle (이미지 출처: http://oracle.com/[oracle.com]'Java Servlet API Specification')
 
 == 실습

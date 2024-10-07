@@ -1,4 +1,4 @@
-== Session
+= Session
 
 ____
 상태가 없는 (stateless) http 프로토콜 상에서 +
@@ -7,9 +7,11 @@ ____
 **하나의 상태로 유지시키는 기술**
 ____
 
-=== 세션은 웹서버에 저장
 
-=== `javax.servlet.http.HttpSession` interface
+* 세션은 웹서버에 저장
+
+
+== `jarkarta.servlet.http.HttpSession` interface
 
 [source,java]
 ----
@@ -33,9 +35,9 @@ public interface HttpSession {
 
 ----
 
-=== 세션 사용법
+== 세션 사용법
 
-==== *세션 생성*
+=== *세션 생성*
 
 [source,java]
 ----
@@ -43,20 +45,20 @@ HttpSession session = request.getSession();        // 있으면 가져오고 없
 HttpSession session = request.getSession(true);
 ----
 
-==== *세션 가져오기*
+=== *세션 가져오기*
 
 [source,java]
 ----
 HttpSession session = request.getSession(false);   // 있으면 가져오고 없으면 null
 ----
 
-==== *세션 종료*
+=== *세션 종료*
 
 ----
 session.invalidate();
 ----
 
-==== *세션 사용하기*
+=== *세션 사용하기*
 
 [source,java]
 ----

@@ -20,7 +20,7 @@ counter.dat 생성 ,default : 1000 설정
 [source,java]
 ----
 @Slf4j
-public class ServletContextListener implements javax.servlet.ServletContextListener {
+public class ServletContextListener implements jakarta.servlet.ServletContextListener {
 
     @Override
     public void contextInitialized(ServletContextEvent sce) {

@@ -16,7 +16,7 @@ RequestDispatcher 인터페이스는 forward()와 include() 두 가지 메서드
 
 ----
 
-== javax.servlet.RequestDispatcher
+== jakarta.servlet.RequestDispatcher
 
 [source,java]
 ----

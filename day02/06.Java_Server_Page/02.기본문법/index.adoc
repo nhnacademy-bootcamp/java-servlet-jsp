@@ -22,8 +22,7 @@
 
 [source,java]
 ----
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-
+<%@ taglib prefix="c" uri="jakarta.tags.core" %>
 ----
 
 == JSP 기본 문법 (Expression)

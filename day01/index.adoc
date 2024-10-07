@@ -26,10 +26,5 @@
     ** Session을 이용한 로그인
     ** 실습 - 로그아웃
 
-== 과제
-
-* 과제 - NHN마트-Servlet version
-
-
 == 1일차 실습
 * link:resources/day01.zip[day01.zip]

@@ -1,49 +1,53 @@
 = WAS
 
-== WAS ( Web Application Server )
+* 웹 애플리케이션 서버(WAS)는 웹 서버와 데이터베이스 사이에서 동작하는 미들웨어로, 클라이언트의 요청을 받아 애플리케이션 로직을 실행하고 그 결과를 다시 웹 서버로 반환하는 역할을 합니다.
 
-* 영미권에서는 주로 **(Java) Application Server** 라고 부름
-* 주로 정적 웹 콘텐츠를 처리하는 웹서버(apache httpd, nginx)와 구분하기 위한 용도
-* Servlet Container(=Web Container), EJB Container 등의 역할을 수행하며
-* 동적 웹 콘텐츠를 생성하기 위한 웹 애플리케이션과 서버 환경을 만들어 동작시키는 기능을 제공
+* (Servlet만 한정해서 보면) 흔히 WAS = Servlet Container라고 합니다.
 
-=== (Servlet만 한정해서 보면) 흔히 WAS = Servlet Container
 
-=== tomcat
+== WAS ( Web Application Server ) ?
 
-* apache 재단에서 개발한 무료 오픈 소스 WAS(Web Application Server)
-* Servlet Container의 reference 구현
+=== 주요 기능
 
-=== 사실 Servlet은 API다?!
+* 동적 콘텐츠 제공
+** WAS는 클라이언트의 요청을 처리하여 동적인 콘텐츠를 생성합니다. 애플리케이션 로직을 실행한 후 그 결과를 웹 서버로 반환합니다.
+* 지원 기술
+** **Java 서블릿**, **JSP(JavaServer Pages)**, EJB(Enterprise JavaBeans) 등의 기술을 지원합니다.
+
+=== WAS의 주요 특징
+* 확장성
+** 많은 수의 동시 요청을 처리할 수 있습니다.
+* 보안
+** 인증, 권한 부여, 데이터 암호화 등의 보안 메커니즘을 제공합니다.
+* 트랜잭션 관리
+** 여러 작업에 걸쳐 데이터의 무결성과 일관성을 보장합니다.
+* 자원 관리
+** 데이터베이스 연결, 스레드 풀 등의 자원을 효율적으로 관리합니다.
+
+=== WAS의 종류
+* **Apache Tomcat**
+** **apache 재단에서 개발한 무료 오픈 소스 WAS(Web Application Server)**
+** Servlet Container의 reference 구현
+
+* IBM WebSphere
+* Oracle WebLogic
+* JBoss EAP
+* TMAX JEUS
+
+== Servlet API
+
+=== Servlet 이란?
+* 서블릿(Servlet)은 자바 프로그래밍 언어로 작성된 클래스이며, 주로 웹 서버에서 동작하는 애플리케이션의 기능을 확장하기 위해 사용됩니다. 서블릿은 클라이언트의 요청을 받아 처리하고, 그 결과를 응답으로 반환하는 역할을 합니다
 
 === Servlet API
 
-* Java EE 에서는 Servlet API Spec 만 정의
-* 실제 구현은 WAS에서 담당
-* ex)
-** Servlet API: javax.servlet.http.HttpServletRequest interface
-** tomcat 구현: org.apache.catalina.connector.Request class
+* Jakarta EE 에서는 Servlet API Spec 만 정의하고 실제 구현은 WAS에서 담당 합니다.
+** 예) ServletRequest
+*** Servlet API: jakarta.servlet.http.HttpServletRequest interface
+*** tomcat 구현: org.apache.catalina.connector.Request class
 
-=== servlet-api 의존 라이브러리 scope가 provided인 이유
+* link:01.maven-scope.adoc[Maven scope, Servlet Api 참고]
 
-=== Servlet API
-
-----
-javax.servlet
-├── RequestDispatcher
-├── Servlet                             v 
-├── ServletConfig
-├── ServletRequest                      v
-├── ServletResponse                     v
-└── http
-    ├── HttpServlet                     v
-    ├── HttpServletRequest              v
-    ├── HttpServletResponse             v
-    ├── HttpSession
-    ├── HttpSessionContext
-    └── ...
-
-----
 
 == Servlet spec과 tomcat version
 
@@ -88,7 +92,7 @@ https://tomcat.apache.org/whichversion.html
 * Servlet Container의 reference 구현
 * 사실상, Servlet Container = WAS = tomcat
 
-== 웹서버와 WAS 연동 - Reverse Proxy
+== 웹서버와 WAS 연동
 
 === Proxy
 
@@ -112,7 +116,7 @@ image:./images/image.png[image.png]
 
 image:./images/image-1.png[image.png]
 
-== nginx에 tomcat 연동
+== Nginx에 Tomcat 연동
 
 * mac
 ** */usr/local/etc/nginx/servers*

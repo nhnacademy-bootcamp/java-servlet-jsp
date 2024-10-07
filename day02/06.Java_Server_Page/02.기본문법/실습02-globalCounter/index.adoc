@@ -39,9 +39,9 @@
  */
 package org.apache.jsp.counter;
 
-import javax.servlet.*;
-import javax.servlet.http.*;
-import javax.servlet.jsp.*;
+import jakarta.servlet.*;
+import jakarta.servlet.http.*;
+import jakarta.servlet.jsp.*;
 
 public final class globalCounter_jsp extends org.apache.jasper.runtime.HttpJspBase
     implements org.apache.jasper.runtime.JspSourceDependent,
@@ -52,8 +52,8 @@ public final class globalCounter_jsp extends org.apache.jasper.runtime.HttpJspBa
             return ++counter;
         }
 
-  private static final javax.servlet.jsp.JspFactory _jspxFactory =
-          javax.servlet.jsp.JspFactory.getDefaultFactory();
+  private static final jakarta.servlet.jsp.JspFactory _jspxFactory =
+          jakarta.servlet.jsp.JspFactory.getDefaultFactory();
 
   private static java.util.Map<java.lang.String,java.lang.Long> _jspx_dependants;
 
@@ -63,13 +63,13 @@ public final class globalCounter_jsp extends org.apache.jasper.runtime.HttpJspBa
 
   static {
     _jspx_imports_packages = new java.util.HashSet<>();
-    _jspx_imports_packages.add("javax.servlet");
-    _jspx_imports_packages.add("javax.servlet.http");
-    _jspx_imports_packages.add("javax.servlet.jsp");
+    _jspx_imports_packages.add("jakarta.servlet");
+    _jspx_imports_packages.add("jakarta.servlet.http");
+    _jspx_imports_packages.add("jakarta.servlet.jsp");
     _jspx_imports_classes = null;
   }
 
-  private volatile javax.el.ExpressionFactory _el_expressionfactory;
+  private volatile jakarta.el.ExpressionFactory _el_expressionfactory;
   private volatile org.apache.tomcat.InstanceManager _jsp_instancemanager;
 
   public java.util.Map<java.lang.String,java.lang.Long> getDependants() {
@@ -84,7 +84,7 @@ public final class globalCounter_jsp extends org.apache.jasper.runtime.HttpJspBa
     return _jspx_imports_classes;
   }
 
-  public javax.el.ExpressionFactory _jsp_getExpressionFactory() {
+  public jakarta.el.ExpressionFactory _jsp_getExpressionFactory() {
     if (_el_expressionfactory == null) {
       synchronized (this) {
         if (_el_expressionfactory == null) {
@@ -112,10 +112,10 @@ public final class globalCounter_jsp extends org.apache.jasper.runtime.HttpJspBa
   public void _jspDestroy() {
   }
 
-  public void _jspService(final javax.servlet.http.HttpServletRequest request, final javax.servlet.http.HttpServletResponse response)
-      throws java.io.IOException, javax.servlet.ServletException {
+  public void _jspService(final jakarta.servlet.http.HttpServletRequest request, final jakarta.servlet.http.HttpServletResponse response)
+      throws java.io.IOException, jakarta.servlet.ServletException {
 
-    if (!javax.servlet.DispatcherType.ERROR.equals(request.getDispatcherType())) {
+    if (!jakarta.servlet.DispatcherType.ERROR.equals(request.getDispatcherType())) {
       final java.lang.String _jspx_method = request.getMethod();
       if ("OPTIONS".equals(_jspx_method)) {
         response.setHeader("Allow","GET, HEAD, POST, OPTIONS");
@@ -128,14 +128,14 @@ public final class globalCounter_jsp extends org.apache.jasper.runtime.HttpJspBa
       }
     }
 
-    final javax.servlet.jsp.PageContext pageContext;
-    javax.servlet.http.HttpSession session = null;
-    final javax.servlet.ServletContext application;
-    final javax.servlet.ServletConfig config;
-    javax.servlet.jsp.JspWriter out = null;
+    final jakarta.servlet.jsp.PageContext pageContext;
+    jakarta.servlet.http.HttpSession session = null;
+    final jakarta.servlet.ServletContext application;
+    final jakarta.servlet.ServletConfig config;
+    jakarta.servlet.jsp.JspWriter out = null;
     final java.lang.Object page = this;
-    javax.servlet.jsp.JspWriter _jspx_out = null;
-    javax.servlet.jsp.PageContext _jspx_page_context = null;
+    jakarta.servlet.jsp.JspWriter _jspx_out = null;
+    jakarta.servlet.jsp.PageContext _jspx_page_context = null;
 
     try {
       response.setContentType("text/html;charset=UTF-8");
@@ -163,7 +163,7 @@ public final class globalCounter_jsp extends org.apache.jasper.runtime.HttpJspBa
       out.write("</body>\n");
       out.write("</html>\n");
     } catch (java.lang.Throwable t) {
-      if (!(t instanceof javax.servlet.jsp.SkipPageException)){
+      if (!(t instanceof jakarta.servlet.jsp.SkipPageException)){
         out = _jspx_out;
         if (out != null && out.getBufferSize() != 0)
           try {

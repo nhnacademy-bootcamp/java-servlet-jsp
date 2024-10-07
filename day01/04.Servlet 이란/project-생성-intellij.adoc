@@ -1,22 +1,21 @@
-=== Intellij에서 maven 프로젝트 생성
+= Intellij에서 Maven기반 프로젝트 생성
 
-* New Project -> Jakarta EE
+== New Project -> Jakarta EE
 ** Template : Web Application
 ** Language : Java
 ** Build System : Maven
 ** Group, Artifact 설정
-** JDK : jdk11, Temurin-11
+** JDK : Jdk21 - Temurin-21
 image:./images/image-8.png[image-8.png]
 
-
-* Java EE version 
-** *Java EE 8 선택*
+== Jakarta EE version
+* *Jakarta EE 9(9.1) 선택*
 
 image:./images/image-9.png[image-9.png]
 
-=== pom.xml 설정
+== pom.xml 설정
 
-* jakarta.servlet-api 의존성 추가
+* jakarta.servlet-api 의존성 추가 (이미 추가되어 있다면 추가할 필요 없음)
 
 [source,xml]
 ----
@@ -24,35 +23,32 @@ image:./images/image-9.png[image-9.png]
     <dependency>
         <groupId>jakarta.servlet</groupId>
         <artifactId>jakarta.servlet-api</artifactId>
-        <version>4.0.4</version>
+        <version>5.0.0</version>
         <scope>provided</scope>
     </dependency>
 </dependencies>
 
 ----
 
-* maven-war-plugin 설정 ( 빌드플러그인 )
+* maven-war-plugin (이미 추가되어 있다면 추가할 필요 없음)
 * packaging : war
 
 [source,xml]
 ----
 <packaging>war</packaging>
+
 <build>
     <plugins>
         <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-war-plugin</artifactId>
-            <version>3.3.2</version>
-            <configuration>
-                <warSourceDirectory>src/main/webapp</warSourceDirectory>
-                <failOnMissingWebXml>false</failOnMissingWebXml>
-            </configuration>
+            <version>3.4.0</version>
         </plugin>
     </plugins>
 </build>
 ----
 
-* 최종 pom.xml
+== 최종 pom.xml
 
 [source,xml]
 ----
@@ -78,7 +74,7 @@ image:./images/image-9.png[image-9.png]
         <dependency>
             <groupId>jakarta.servlet</groupId>
             <artifactId>jakarta.servlet-api</artifactId>
-            <version>4.0.4</version>
+            <version>5.0.0</version>
             <scope>provided</scope>
         </dependency>
     </dependencies>
@@ -88,11 +84,7 @@ image:./images/image-9.png[image-9.png]
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-war-plugin</artifactId>
-                <version>3.3.2</version>
-                <configuration>
-                    <warSourceDirectory>src/main/webapp</warSourceDirectory>
-                    <failOnMissingWebXml>false</failOnMissingWebXml>
-                </configuration>
+                <version>3.4.0</version>
             </plugin>
         </plugins>
     </build>

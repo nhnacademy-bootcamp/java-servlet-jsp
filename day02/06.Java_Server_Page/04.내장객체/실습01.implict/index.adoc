@@ -55,7 +55,7 @@ image:resources/img-01.png[img-01.png]
 
 == PageContext 내장객체 ( Jsp Context API )
 
-* https://javaee.github.io/javaee-spec/javadocs/javax/servlet/jsp/PageContext.html?is-external=true
+* https://javaee.github.io/javaee-spec/javadocs/jakarta/servlet/jsp/PageContext.html?is-external=true
 
 image:resources/img-02.png[img-02.png]
 

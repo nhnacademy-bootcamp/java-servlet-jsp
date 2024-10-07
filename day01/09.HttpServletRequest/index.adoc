@@ -1,5 +1,7 @@
 = HttpServletRequest
 
+* HttpServletRequest는 Java Servlet API의 일부로, 클라이언트가 서버에 보낸 HTTP 요청을 나타내는 인터페이스입니다.
+
 == Servlet Request Abstraction
 
 * 클라이언트의 요청을 Abstraction

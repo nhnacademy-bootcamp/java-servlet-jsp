@@ -23,4 +23,4 @@ Content-Disposition: attachment; filename=a.jpg
 * try-with-resources
 * java.nio.file.Files.newInputStream(Path path, OpenOption… options)
 * java.nio.file.Paths.get(String first, String… more)
-* javax.servlet.getOutputStream()
+* jakarta.servlet.getOutputStream()

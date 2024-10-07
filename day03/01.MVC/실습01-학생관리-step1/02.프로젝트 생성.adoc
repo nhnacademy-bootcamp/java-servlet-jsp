@@ -1,6 +1,7 @@
 = Project 생성
 
-* java version : 11
+* java version : 21
+* Servlet - API : 5.0
 * com.nhnacademy.student
 ** group : com.nhnacademy
 ** Artifact : student

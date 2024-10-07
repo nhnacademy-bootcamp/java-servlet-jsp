@@ -80,17 +80,17 @@ public class CharacterEncodingFilter implements Filter {
 [source,java]
 ----
 @WebListener
-public class ServletContextListener implements javax.servlet.ServletContextListener {
+public class ServletContextListener implements jakarta.servlet.ServletContextListener {
     // ...
 }
 ----
 
 ## <context-param>
 
-### javax.servlet.ServletContainerInitializer interface
+### jakarta.servlet.ServletContainerInitializer interface
 
 * 웹 애플리케이션 초기화 단계에서 프로그램적으로 Servlet, Filter, Listener 등을 등록할 수 있는 인터페이스
-* https://docs.oracle.com/javaee/6/api/javax/servlet/ServletContainerInitializer.html
+* https://docs.oracle.com/javaee/6/api/jakarta/servlet/ServletContainerInitializer.html
 * https://docs.oracle.com/javase/6/docs/technotes/guides/jar/jar.html#Service%20Provider
 ** 서버가 실행될때 ServletContainerInitializer service provider를 찾은뒤 @HandleTypes 로 정의된 클래스를 실행한다. (servlet 3.0 spec)
 
@@ -103,10 +103,10 @@ public interface ServletContainerInitializer {
 
 == ServletContainerInitializer 구현
 
-=== javax.servlet.ServletContainerInitializer 파일 생성
+=== jakarta.servlet.ServletContainerInitializer 파일 생성
 
 * resources/META-INF/services 폴더 하위에
-** javax.servlet.ServletContainerInitializer 파일 생성
+** jakarta.servlet.ServletContainerInitializer 파일 생성
 ** 파일 내용 : 구현 클래스 FQCN (Fully Qualified Class Name)  - ** 클래스가 속해있는 페키지명을 모두 포함한 이름. **
 
 image:resources/img.png[img.png]
@@ -114,10 +114,10 @@ image:resources/img.png[img.png]
 [source,java]
 ----
 @HandlesTypes(value = {
-        javax.servlet.http.HttpServlet.class,
-        javax.servlet.Filter.class,
-        javax.servlet.ServletContextListener.class,
-        javax.servlet.http.HttpSessionListener.class
+        jakarta.servlet.http.HttpServlet.class,
+        jakarta.servlet.Filter.class,
+        jakarta.servlet.ServletContextListener.class,
+        jakarta.servlet.http.HttpSessionListener.class
 })
 public class WebAppInitializer implements ServletContainerInitializer {
     @Override

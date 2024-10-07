@@ -18,7 +18,7 @@
 
 == ServletContainerListener interface 및 Listener 등록
 
-=== javax.servlet.ServletContextListener interface
+=== jakarta.servlet.ServletContextListener interface
 
 [source,java]
 ----

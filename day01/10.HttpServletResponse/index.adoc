@@ -1,5 +1,7 @@
 = HttpServletResponse
 
+* HttpServletResponse는 Java Servlet API의 일부로, 클라이언트에게 HTTP 응답을 보내기 위한 HTTP 전용 기능을 제공합니다
+
 == Servlet Response Abstraction
 
 image::images/image-01.png[]

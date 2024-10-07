@@ -11,8 +11,7 @@
 <dependency>
     <groupId>org.glassfish.web</groupId>
     <artifactId>jakarta.servlet.jsp.jstl</artifactId>
-    <version>1.2.6</version>
-    <scope>runtime</scope>
+    <version>3.0.1</version>
 </dependency>
 
 ----
@@ -22,11 +21,11 @@
 |===
 |prefix |name |URI |내용 
 
-|c |core |http://java.sun.com/jsp/jstl/core |변수 지원, URL 관리, 흐름 제어 등 
-|fn |function |http://java.sun.com/jsp/jstl/functions |문자열 조작 등 
-|fmt |formatting |http://java.sun.com/jsp/jstl/fmt |로케일, 타임존, 날짜, 시간, 화폐 포맷팅 등 
-|x |xml |http://java.sun.com/jsp/jstl/xml |XML 처리 
-|sql |sql |http://java.sun.com/jsp/jstl/sql |데이터 소스 설정, SQL 쿼리 수행 등 
+|c |core |jakarta.tags.core|변수 지원, URL 관리, 흐름 제어 등
+|fn |function |jakarta.tags.functions|문자열 조작 등
+|fmt |formatting |jakarta.tags.fmt|로케일, 타임존, 날짜, 시간, 화폐 포맷팅 등
+|x |xml |jakarta.tags.xml|XML 처리
+|sql |sql |jakarta.tags.sql|데이터 소스 설정, SQL 쿼리 수행 등
 |===
 
 == core tag library
@@ -35,7 +34,7 @@
 
 [source,xml]
 ----
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib prefix="c" uri="jakarta.tags.core" %>
 ----
 
 == 일반
@@ -49,7 +48,7 @@
 [source,xml]
 ----
 <%@ page contentType="text/html;charset=UTF-8" language="java" trimDirectiveWhitespaces="true" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib prefix="c" uri="jakarta.tags.core" %>
 
 <html>
 <head>
@@ -78,7 +77,7 @@
 [source,xml]
 ----
 <%@ page contentType="text/html;charset=UTF-8" language="java" trimDirectiveWhitespaces="true" %>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <html>
 <head>
     <title>jstl - 조건문/반복문</title>
@@ -134,7 +133,7 @@
 [source,xml]
 ----
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <html>
 <head>
     <title>c:url, c:param - c:redirect </title>
@@ -156,7 +155,7 @@
 [source,xml]
 ----
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <html>
 <head>
     <title>c:url, c:param - c:redirect </title>
@@ -179,7 +178,7 @@
 
 [source,xml]
 ----
-<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+<%@ taglib prefix="fn" uri="jakarta.tags.functions" %>
 ----
 
 === 함수
@@ -199,7 +198,9 @@
 [source,xml]
 ----
 <%@ page contentType="text/html;charset=UTF-8" language="java" trimDirectiveWhitespaces="true" %>
-<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ taglib prefix="c" uri="jakarta.tags.core" %>
+<%@ taglib prefix="fn" uri="jakarta.tags.functions" %>
+
 <html>
     <head>
         <title>function tag library</title>
@@ -220,7 +221,7 @@
 
 [source,xml]
 ----
-<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<%@ taglib prefix="fmt" uri="jakarta.tags.fmt" %>
 ----
 
 * fmt:setLocale : 로케일 설정
@@ -246,7 +247,8 @@
 [source,xml]
 ----
 <%@ page contentType="text/html;charset=UTF-8" language="java" trimDirectiveWhitespaces="true" %>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="c" uri="jakarta.tags.core" %>
+<%@ taglib prefix="fmt" uri="jakarta.tags.fmt" %>
 <html>
     <head>
         <meta charset="UTF-8" />
@@ -272,8 +274,8 @@
 [source,xml]
 ----
 <%@ page contentType="text/html;charset=UTF-8" language="java" trimDirectiveWhitespaces="true" %>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="c" uri="jakarta.tags.core" %>
+<%@ taglib prefix="fmt" uri="jakarta.tags.fmt" %>
 <html>
 <head>
     <title>숫자 포맷팅</title>
@@ -314,8 +316,8 @@
 ----
 <%@ page import="java.util.Date" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" trimDirectiveWhitespaces="true" %>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="c" uri="jakarta.tags.core" %>
+<%@ taglib prefix="fmt" uri="jakarta.tags.fmt" %>
 <html>
     <head>
         <title>날짜 포맷팅</title>

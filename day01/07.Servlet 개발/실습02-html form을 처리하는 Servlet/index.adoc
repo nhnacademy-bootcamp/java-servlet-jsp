@@ -8,6 +8,6 @@
 
 image:./images/image-1.png[image.png]
 
-* subbmit
+* Submit(전송)
 
 image:./images/image-2.png[image.png]

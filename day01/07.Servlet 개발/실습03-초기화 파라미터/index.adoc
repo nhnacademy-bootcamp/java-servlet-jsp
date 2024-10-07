@@ -1,6 +1,6 @@
 = 초기화 파라미터
 
-== javax.servlet.ServletConfig interface
+== jakarta.servlet.ServletConfig interface
 
 [source,java]
 ----
